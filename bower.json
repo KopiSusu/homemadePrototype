@@ -14,11 +14,11 @@
     "tests"
   ],
   "dependencies": {
-    "angular-masonry": "~0.13.0",
-    "angular-gridster": "~0.13.5",
+    "angular": "",
     "angular-animate": "~1.4.7",
     "angular-bootstrap": "~0.14.3",
     "bootstrap": "~3.3.5",
-    "ngSmoothScroll": "~2.0.0"
+    "ngSmoothScroll": "~2.0.0",
+    "angular-route": "~1.4.8"
   }
 }
