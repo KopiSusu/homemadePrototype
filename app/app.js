@@ -8,6 +8,7 @@
     		'HomeMade.landingService', 
     		'HomeMade.mealFactory', 
     		'HomeMade.userFactory',
+    		'HomeMade.apiFactory',
     		'HomeMade.cookingService',
     		'HomeMade.paymentFactory',
     		'HomeMade.paymentService'

@@ -2,15 +2,8 @@ angular
     .module('HomeMade.apiFactory', [])
     .factory('apiFactory', apiFactory);
 
-function apiFactory($http, $rootScope, parse) {
+function apiFactory($http, $rootScope) {
 
-	var apiObject = {};
-
-	Parse.getUser
-
-	parse.success(function (results) {
-		return results;
-	});
 
     return {
 
