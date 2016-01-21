@@ -15,9 +15,13 @@
     	.config(['$routeProvider', function($routeProvider) {
     		// This is how to change url and create custom routes. Super easy! add this anywhere in the app
     		// $route.current.templateUrl = '/pages/' + $routeParams.name + ".html";
-    		
+
 		    $routeProvider
 		    	.when('/chef', {
+		        	templateUrl: 'app/main/chef/chef.html',
+		        	controller: 'chefCtrl'
+		      	})
+		      	.when('/chef/:chefId', {
 		        	templateUrl: 'app/main/chef/chef.html',
 		        	controller: 'chefCtrl'
 		      	})

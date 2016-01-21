@@ -4,9 +4,12 @@ angular
 
 function chefFactory($http, $rootScope) {
 
+	var aCall = function () {
+		alert("hello!")
+	}
 
     return {
-
+    	aCall: aCall
     }
 
 };

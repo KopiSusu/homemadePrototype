@@ -17,5 +17,7 @@ Run down of file structure
 				-> main
 
 						-> meal
-						
+
 								-> meal.js/html (all files relating to "meal" component)
+
+	Express server in server.js

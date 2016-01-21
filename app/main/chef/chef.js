@@ -4,9 +4,11 @@
     .controller('chefCtrl', chefCtrl)
   	.directive('chefPartial', chefPartial);
 
-  	function chefCtrl ($scope) {
-  		$scope.testMessage = "Im on the chef page!";
-  	}
+	function chefCtrl ($scope, chefFactory, apiFactory) {
+    
+		$scope.testMessage = "Im on the chef page!";
+
+	}
 
 	function chefPartial () {
 		return {
