@@ -27,7 +27,7 @@
             _cooking = cooking;
             $scope.domElements.meal = cooking.get("meal").get("name");
             $scope.domElements.imgSrc = cooking.get("meal").get("imageURLS")[0];
-            $scope.domElements.cook = cooking.get("cook").get("displayName");
+            $scope.domElements.cook = cooking.get("cook").get("displayName").toUpperCase();
             $scope.domElements.mealDescription = cooking.get("meal").get("information");
           },
           function(errorPayload) {
