@@ -1,7 +1,8 @@
 html, body {
   margin: 0;
   height: 100%;
-  color: #5e5e5e;
+  color: rgba(0,0,0,.6);
+  font-color: #555;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -42,6 +43,7 @@ html, body {
   font-size: 5vw;
   padding: 5%; 
   margin: 0;
+  color: rgba(0,0,0,.7);
 }
 #mainPage #ChefPartial .Container .horizontalLine {
   width: 100%;
@@ -54,6 +56,7 @@ html, body {
   margin-top: -10px;
   display: inline-block;
   font-weight: bold;
+  color: rgba(0,0,0,.7);
 }
 #mainPage #ChefPartial .Container .horizontalLine .line {
   width: 80%;
@@ -71,6 +74,7 @@ html, body {
 
 #mainPage #ChefPartial .Container .DescriptionBlock p {
   margin: 0% 8% 5%;
+  text-align: left;
 }
 
 /*​------------- Scrollbar ---------------*/
