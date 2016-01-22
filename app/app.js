@@ -5,7 +5,6 @@
     		'ui.bootstrap', 
     		'ngRoute', 
     		'HomeMade.chefFactory', 
-    		'HomeMade.landingService', 
     		'HomeMade.mealFactory', 
     		'HomeMade.userFactory',
     		'HomeMade.apiFactory',
@@ -22,10 +21,6 @@
 		        	templateUrl: 'app/main/chef/chef.html',
 		        	controller: 'chefCtrl'
 		      	})
-		      	.when('/chef/:chefId', {
-		        	templateUrl: 'app/main/chef/chef.html',
-		        	controller: 'chefCtrl'
-		      	})
 		      	.when('/meal', {
 		        	templateUrl: 'app/main/meal/meal.html',
 		        	controller: 'mealCtrl'
@@ -38,12 +33,8 @@
 		        	templateUrl: 'app/main/user/user.html',
 		        	controller: 'userCtrl'
 		      	})
-		      	.when('/', {
-		      		templateUrl: 'app/main/landing/landing.html',
-		        	controller: 'landingCtrl'
-		      	})
 		      	.otherwise({
-		        	redirectTo: '/'
+		        	redirectTo: '/chef'
 	     		});
 	     }]);
 })();
