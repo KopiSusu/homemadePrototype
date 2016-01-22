@@ -5,7 +5,7 @@ html, body {
   font-color: #555;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
@@ -41,7 +41,7 @@ html, body {
 #mainPage #ChefPartial .Container h1 {
   font-weight: bold;
   font-size: 6vw;
-  padding: 3% 5% 5%;
+  padding: 5% 5% 5%;
   margin: 0;
   color: rgba(0,0,0,.7);
 }
@@ -55,7 +55,6 @@ html, body {
   font-size: 4vw;
   margin-top: -3%;
   display: inline-block;
-  font-weight: bold;
   color: rgba(0,0,0,.7);
 }
 #mainPage #ChefPartial .Container .horizontalLine .line {
@@ -74,7 +73,8 @@ html, body {
 
 #mainPage #ChefPartial .Container .DescriptionBlock p {
   margin: 0% 8% 5%;
-  font-size: 5vw;
+  font-size: 4vw;
+  line-height: 1.5em;
   text-align: left;
 }
 
