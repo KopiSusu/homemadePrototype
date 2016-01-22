@@ -3,7 +3,7 @@ html, body {
   height: 100%;
   color: #5e5e5e;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -53,11 +53,24 @@ html, body {
   padding: 0% 1%;
   margin-top: -10px;
   display: inline-block;
+  font-weight: bold;
 }
 #mainPage #ChefPartial .Container .horizontalLine .line {
   width: 80%;
   margin: 0% 10%;
   border-bottom: 1px solid;
+}
+#mainPage #ChefPartial .Container .ImgBlock img {
+  width: 70%;
+  padding: 0% 5%;
+}
+#mainPage #ChefPartial .Container .DescriptionBlock h1 {
+  font-size: 4vw;
+  padding: 2%;
+}
+
+#mainPage #ChefPartial .Container .DescriptionBlock p {
+  margin: 0% 8% 5%;
 }
 
 /*​------------- Scrollbar ---------------*/
@@ -67,14 +80,12 @@ html, body {
 }
 /* Track */
 ::-webkit-scrollbar-track {
-   -webkit-background: #4a586d;
-   background: #4a586d;
-   border: 1px solid #5c687b;
+   -webkit-background: #f0f0f0;
+   background: #f0f0f0;
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
    -webkit-border-radius: 10px;
    border-radius: 10px;
-   border: 1px solid #5c687b;
-   background: #303f53;
+   background: #5e5e5e;
 }

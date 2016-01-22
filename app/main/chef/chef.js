@@ -12,6 +12,11 @@
     // ex. scope.domElements.meal = "whatever the meal name is"
     $scope.domElements = {};
 
+    // temp values until api works
+    $scope.domElements.availablity = "Mon. 9/18";
+    $scope.domElements.mealDescription = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.";
+    $scope.domElements.chefLocation = "Brooklyn, NY";
+
     //////////////////////////
     //// Private functions ///
     //////////////////////////
