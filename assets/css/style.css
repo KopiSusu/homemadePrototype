@@ -40,8 +40,8 @@ html, body {
 }
 #mainPage #ChefPartial .Container h1 {
   font-weight: bold;
-  font-size: 5vw;
-  padding: 5%; 
+  font-size: 6vw;
+  padding: 5%;
   margin: 0;
   color: rgba(0,0,0,.7);
 }
@@ -50,10 +50,10 @@ html, body {
   position: relative;
 }
 #mainPage #ChefPartial .Container .horizontalLine .text {
-  top: -25px;
   background: #f0f0f0;
-  padding: 0% 1%;
-  margin-top: -10px;
+  padding: 0% 3%;
+  font-size: 4vw;
+  margin-top: -2.5%;
   display: inline-block;
   font-weight: bold;
   color: rgba(0,0,0,.7);
@@ -61,19 +61,20 @@ html, body {
 #mainPage #ChefPartial .Container .horizontalLine .line {
   width: 80%;
   margin: 0% 10%;
-  border-bottom: 1px solid;
+  border-bottom: 2px solid;
 }
 #mainPage #ChefPartial .Container .ImgBlock img {
   width: 70%;
   padding: 0% 5%;
 }
 #mainPage #ChefPartial .Container .DescriptionBlock h1 {
-  font-size: 4vw;
+  font-size: 5vw;
   padding: 2%;
 }
 
 #mainPage #ChefPartial .Container .DescriptionBlock p {
   margin: 0% 8% 5%;
+  font-size: 5vw;
   text-align: left;
 }
 
