@@ -20,8 +20,25 @@
     //// Private functions ///
     //////////////////////////
 
+    //Create a request for an eater.
+    var _createRequest = function (cooking, eater, servings) {
+      chefFactory.createRequest(cooking, eater, servings)
+        .then(
+          function(request) { 
+            //Also send a push here!
+            chefFactory.sendPushForRequest(request);
+            console.log(request);
+            // chefFactory.updateCooking(_cooking,servings); 
+
+          },
+          function(errorPayload) {
+            console.log(errorPayload);
+          }
+        );   
+    }
+
     var _getChefDetails = function () {
-      chefFactory.getCooking('S7hm3vZhJH')
+      chefFactory.getCooking('ceVN2FoR79')
         .then(
           function(cooking) { 
             _cooking = cooking;
@@ -33,10 +50,71 @@
           function(errorPayload) {
             $log.error('failure loading movie', errorPayload);
           }
-        );    
+        );   
     }
 
     _getChefDetails();
+
+    /* testing signup.
+      chefFactory.signupUser("101011", "mouse")
+        .then(
+          function(user) { 
+            //Also send a push here!
+            console.log(user);
+            // chefFactory.updateCooking(_cooking,servings); 
+          },
+          function(errorPayload) {
+            console.log(errorPayload);
+          }
+      ); 
+    */  
+
+    /* testing login.
+      chefFactory.loginUser("101011", "mouse")
+        .then(
+          function(user) { 
+            //Also send a push here!
+            console.log(user);
+            // chefFactory.updateCooking(_cooking,servings); 
+          },
+          function(errorPayload) {
+            console.log(errorPayload);
+          }
+      ); 
+    */  
+
+    /* Accessing the current user in the Parse Object
+    var currentUser = chefFactory.currentUser();
+    console.log(currentUser);
+    */
+
+    /*Testing create customer with a fake token.
+    chefFactory.createCustomer("cus_MikeToken", "mike@grazer.co")
+        .then(
+          function(result) { 
+            //Also send a push here!
+            console.log(result);
+            // chefFactory.updateCooking(_cooking,servings); 
+          },
+          function(errorPayload) {
+            console.log(errorPayload);
+          }
+      ); 
+    */
+
+    /*Example of using updateUser, can pass as many params as you need.
+    chefFactory.updateUser({email: "Updated.email@m.com", displayName: "Michael J Dee"})
+        .then(
+          function(result) { 
+            //Also send a push here!
+            console.log(result);
+            // chefFactory.updateCooking(_cooking,servings); 
+          },
+          function(errorPayload) {
+            console.log(errorPayload);
+          }
+      );
+    */
 
   }
 

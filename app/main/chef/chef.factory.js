@@ -4,7 +4,7 @@ angular
 
 function chefFactory($http, $rootScope, $q, $log) {
 
-  	Parse.initialize("zAOPmmOBH8zN9r5iX6LFHFxLJEnycHIqV7a7QO5F", "z8IhWLkM0NWV82CvWBeKttjVTgKkGib3ICzCyMnN");
+  	Parse.initialize("2JaqaPhXQ87McQQKGGEsCpv8zODw2C2j82mZSDeW", "TOjSospd3VmFRGFvKg9W0H5JvbElQoeh3QWzfbxm");
 
   	///////////////////////////////////////
   	//// Public Functions To Be Shared ////
@@ -25,7 +25,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 	      {
 	      	deferred.resolve(cooking);
 	      } else {
-	      	deferred.resolve("Unable to get a cooking");
+	      	deferred.reject("Unable to get a cooking");
 	      }
 	    });
 	    return deferred.promise;
@@ -37,8 +37,36 @@ function chefFactory($http, $rootScope, $q, $log) {
 		cooking.save();
 	};
 
-	var sendPushForRequest = function (request) {
+	//Not fully implemented yet Need to attach eater to request.
+	var createRequest = function (cooking, eater, servings) {
+		var deferred = $q.defer();
+		var meal = cooking.get("meal");
+		var Request = Parse.Object.extend("Request");
+		var request = new Request();
+		request.set("servings", servings);
+		request.set("status", "new");
+		request.set("pickup", "pickup");
+		request.set("cooking", cooking);
+		request.set("meal", meal);
+		request.set("cook", cooking.get("cook"));
+		request.set("time", cooking.get("start"));
+		request.set("end", cooking.get("end"));
+		var mealDict = {imageURLS: meal.get("imageURLS"), objectId: meal.id, name: meal.get("name")};
+		var cartItems = [{addOns: [], meal: mealDict, price: meal.get("price"), servings: servings}];
+		request.set("cartItems", cartItems);
 
+		request.save().then(function(request) {
+	      if(request)
+	      {
+	      	deferred.resolve(request);
+	      } else {
+	      	deferred.reject("Unable to save request");
+	      }
+	    });
+	  	return deferred.promise;
+	};
+
+	var sendPushForRequest = function (request) {
 		var time = request.get("time");
         var dateString = (date.getMonth() +1) + "/" + date.getDate();
 		var message = "An eater requested " + request.get("servings") + " servings on " + dateString + ".";
@@ -56,12 +84,113 @@ function chefFactory($http, $rootScope, $q, $log) {
 		});
 	}
 
+	//MARK Login & Signup Methods
+	var signupUser = function (phoneNumber, password) {
+		var deferred = $q.defer();
+		var user = new Parse.User();
+		phoneNumber = phoneNumber.replace(/\D/g, '');
+		user.set("username", phoneNumber);
+		user.set("password", password);
+		// user.set("email", "email@example.com");
+		user.signUp(null, {
+		  success: function(user) {
+		    // Hooray! Let them use the app now.
+		   	deferred.resolve(user);
+		  },
+		  error: function(user, error) {
+		    // Show the error message somewhere and let the user try again.
+	      	deferred.reject(error);
+		  }
+		});
+		return deferred.promise;
+	}
+
+	var loginUser = function (phoneNumber, password) {
+		var deferred = $q.defer();
+		phoneNumber = phoneNumber.replace(/\D/g, '');
+		Parse.User.logIn(phoneNumber, password, {
+		  success: function(user) {
+		    // Do stuff after successful login.
+		   	deferred.resolve(user);
+		  },
+		  error: function(user, error) {
+		    // The login failed. Check error to see why.
+	      	deferred.reject(error);
+		  }
+		});
+		return deferred.promise;
+	}
+
+	var updateUser = function (params) {
+		var deferred = $q.defer();
+		var user = Parse.User.current();
+		for (var key in params) {
+			user.set(key, params[key]);
+		}
+		user.save().then(function(user) 
+		{
+			deferred.resolve(user);
+		} , function(error) {
+		// the save failed.
+		  console.log("failed to save user with error " + error.message);
+		  deferred.reject(error);
+		});
+      return deferred.promise;
+	}
+
+	var currentUser = function () {
+		return Parse.User.current();
+	}
+
+	//Stripe calls.
+
+	var createCustomer = function (token, email) {
+		var deferred = $q.defer();
+		var cloudParams = {card: token, email: email}
+		Parse.Cloud.run("createCustomer", cloudParams).then(function(result) {
+		    // make sure the set the enail sent flag on the object
+		    //Result should be the cus_IDENTIFIER from stripe. We can update user with it.
+		    console.log("result :" + JSON.stringify(result))
+		    deferred.resolve(result);
+		}, function(error) {
+		    // error
+		    console.log(error);
+		    deferred.reject(error);
+		});
+		return deferred.promise;
+	}
+
+	var updateCustomer = function (customerID, token) {
+		var deferred = $q.defer();
+		var cloudParams = {stripeId: token}
+		Parse.Cloud.run("createCustomer", cloudParams).then(function(result) {
+		    // make sure the set the enail sent flag on the object
+		    //Result should be the cus_IDENTIFIER from stripe. We can update user with it.
+		    console.log("result :" + JSON.stringify(result))
+		}, function(error) {
+		    // error
+		    console.log(error);
+		    deferred.reject(error);
+		});
+		return deferred.promise;
+	}
+ 
+
+
 	/////////////////////////////////////
   	//// Private functions not shared ///
   	/////////////////////////////////////
 
     return {
-    	getCooking: getCooking
+    	getCooking: getCooking,
+    	updateCooking: updateCooking,
+    	createRequest: createRequest,
+    	signupUser: signupUser,
+    	loginUser: loginUser,
+    	currentUser: currentUser,
+    	createCustomer: createCustomer,
+    	updateCustomer: updateCustomer,
+    	updateUser: updateUser
     }
 
 };
