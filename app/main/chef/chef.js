@@ -15,6 +15,7 @@
     // temp values still needed from API
     $scope.domElements.availablity = "Mon. 9/18";
     $scope.domElements.chefLocation = "Brooklyn, NY";
+    $scope.domElements.timeSelected = "7:30";
 
     //////////////////////////
     //// Private functions ///
@@ -56,6 +57,14 @@
     }
 
     _getChefDetails();
+
+    /////////////////////////
+    //// Public functions ///
+    /////////////////////////
+
+    $scope.selectTimePeriod = function (time) {
+      $scope.domElements.timeSelected = time;
+    }
 
     /* testing signup.
       chefFactory.signupUser("101011", "mouse")
