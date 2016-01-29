@@ -56,6 +56,7 @@
             $scope.domElements.userAddress.city = cooking.get("cook").get("city");
             $scope.domElements.userAddress.state = cooking.get("cook").get("state"); 
             $scope.domElements.availablity = (cooking.get("start").getMonth() + 1 ) + "/" + cooking.get("start").getDay();
+            $scope.domElements.day = days[cooking.get("start").getDay()].substring(0, 3) + ".";
           },
           function(errorPayload) {
             $log.error('failure loading movie', errorPayload);
