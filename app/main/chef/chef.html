@@ -6,7 +6,7 @@
 			<h1>{{domElements.cook}}'S KITCHEN</h1>
 			<span class="horizontalLine">
 				<div class="line"></div>
-				<p class="text">{{domElements.chefLocation}}</p>
+				<p class="text">{{domElements.userAddress.city}}, <span>{{domElements.userAddress.state}}</span></p>
 			</span>
 		</div>
 
@@ -30,7 +30,7 @@
 			<div class="timeSelect" ng-class="{selected: domElements.timeSelected === '7:00'}" ng-click="selectTimePeriod('7:00')">7:00</div>
 			<div class="timeSelect" ng-class="{selected: domElements.timeSelected === '7:30'}" ng-click="selectTimePeriod('7:30')">7:30</div>
 			<div class="timeSelect" ng-class="{selected: domElements.timeSelected === '8:00'}" ng-click="selectTimePeriod('8:00')">8:00</div>
-			<div class="timeSelect submit">Buy now for $10</div>
+			<div class="timeSelect submit">Buy now for ${{domElements.mealPrice}}</div>
 		</div>
 
 		<span class="horizontalLine">

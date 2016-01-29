@@ -6,7 +6,9 @@
 	function chefCtrl ($scope, $log, chefFactory, apiFactory) {
 
     // Store Cooking Object, Private
-    var _cooking = {};  
+    var _cooking = {};
+    var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
     // Attach all elements that need to be passed to the dom to this object, Public
     // ex. scope.domElements.meal = "whatever the meal name is"
@@ -14,7 +16,6 @@
 
     // temp values still needed from API
     $scope.domElements.availablity = "Mon. 9/18";
-    $scope.domElements.chefLocation = "Brooklyn, NY";
     $scope.domElements.timeSelected = "7:30";
 
     //////////////////////////
@@ -47,9 +48,14 @@
             $scope.domElements.imgSrc = cooking.get("meal").get("imageURLS")[0];
             $scope.domElements.cook = cooking.get("cook").get("displayName").toUpperCase();
             $scope.domElements.mealDescription = cooking.get("meal").get("information");
+            $scope.domElements.mealPrice = cooking.get("meal").get("price");
             $scope.domElements.ingredients = cooking.get("meal").get('ingredients').replace(/\s[/]/g, ',');
             $scope.domElements.bio = cooking.get("cook").get("bio");
-            $scope.domElements.bioImgSrc = cooking.get("cook").get("imageURL");             
+            $scope.domElements.bioImgSrc = cooking.get("cook").get("imageURL");  
+            $scope.domElements.userAddress = {};
+            $scope.domElements.userAddress.city = cooking.get("cook").get("city");
+            $scope.domElements.userAddress.state = cooking.get("cook").get("state"); 
+            $scope.domElements.availablity = (cooking.get("start").getMonth() + 1 ) + "/" + cooking.get("start").getDay();
           },
           function(errorPayload) {
             $log.error('failure loading movie', errorPayload);
