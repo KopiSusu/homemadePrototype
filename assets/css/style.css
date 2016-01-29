@@ -37,11 +37,12 @@ html, body {
 }
 #mainPage #ChefPartial .Container {
   width: 100%;
+  padding: 2% 0% 0%;
 }
 #mainPage #ChefPartial .Container h1 {
   font-size: 5vw;
   font-weight: 500;
-  padding: 5% 5% 5%;
+  padding: 5% 5% 6%;
   margin: 0;
   color: rgba(0,0,0,.7);
 }
@@ -73,10 +74,10 @@ html, body {
 }
 
 #mainPage #ChefPartial .Container .DescriptionBlock p {
-  margin: 0% 9% 4%;
-  font-size: 4vw;
-  line-height: 1.5em;
-  text-align: left;
+    margin: 0% 9% 0%;
+    font-size: 4vw;
+    line-height: 1.5em;
+    text-align: left;
 }
 
 #mainPage #ChefPartial .Container .buttonGroup {
@@ -110,6 +111,18 @@ html, body {
   background: #85C597;
   color: #f0f0f0;
   border: 4px solid rgba(133,197,151, 0.1);
+}
+
+#mainPage #ChefPartial .Container .titleBlock {
+  position: relative;
+  margin-top: 0%;
+}
+#mainPage #ChefPartial .Container .cookImg {
+position: absolute;
+    width: 14%;
+    left: 16%;
+    top: 5%;
+    border-radius: 50%;
 }
 
 /*​------------- Scrollbar ---------------*/

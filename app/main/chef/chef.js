@@ -48,7 +48,8 @@
             $scope.domElements.cook = cooking.get("cook").get("displayName").toUpperCase();
             $scope.domElements.mealDescription = cooking.get("meal").get("information");
             $scope.domElements.ingredients = cooking.get("meal").get('ingredients').replace(/\s[/]/g, ',');
-            $scope.domElements.bio = cooking.get("cook").get("bio");            
+            $scope.domElements.bio = cooking.get("cook").get("bio");
+            $scope.domElements.bioImgSrc = cooking.get("cook").get("imageURL");             
           },
           function(errorPayload) {
             $log.error('failure loading movie', errorPayload);
