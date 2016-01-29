@@ -79,6 +79,38 @@ html, body {
   text-align: left;
 }
 
+#mainPage #ChefPartial .Container .buttonGroup {
+  width: 100%;
+  position: relative;
+}
+
+#mainPage #ChefPartial .Container .buttonGroup .timeSelect {
+  display: inline-block;
+  width: 22%;
+  height: 30px;
+  border: 4px solid;
+  font-weight: 500;
+  font-size: 3vh;
+  line-height: 30px;
+  margin: 0% 2%;
+  cursor: pointer;
+}
+#mainPage #ChefPartial .Container .buttonGroup .timeSelect.selected {
+  color: #f0f0f0;
+  background: rgba(0,0,0,.7);
+  border: 4px solid rgba(0,0,0,0.1);
+} 
+#mainPage #ChefPartial .Container .buttonGroup .timeSelect.submit {
+  display: block;
+  width: 45%;
+  margin: 3% 27.5% 4%;
+  font-weight: 300;
+  font-size: 2.7vh;
+  background: #85C597;
+  color: #f0f0f0;
+  border: 4px solid rgba(133,197,151, 0.1);
+}
+
 /*​------------- Scrollbar ---------------*/
 ::-webkit-scrollbar {
    width: 8px;

@@ -23,13 +23,31 @@
 
 	<section id="MealPaymentBlock" class="Container"> 
 		<span class="horizontalLine">
-			<div class="line"></div>
 			<p class="text">next available on: {{domElements.availablity}}</p>
 		</span>
+
+		<div class="buttonGroup">
+			<div class="timeSelect">7:00</div>
+			<div class="timeSelect selected">7:30</div>
+			<div class="timeSelect">8:00</div>
+			<div class="timeSelect submit">Buy now for $10</div>
+		</div>
+
+		<span class="horizontalLine">
+			<div class="line"></div>
+			<h3 class="text">Ingredients</h3>
+		</span>
+
+		<div class="DescriptionBlock">
+			<p>{{domElements.ingredients}}</p>
+		</div>
 	</section>
 
 	<section id="chefDescription" class="Container"> 
-		
+		<div></div>
+		<div class="TitleBlock">
+			<h1 style="padding-top: 0;">{{domElements.cook}}</h1>
+		</div>
 		
 	</section>
 
