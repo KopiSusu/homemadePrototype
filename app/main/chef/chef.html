@@ -27,9 +27,7 @@
 		</span>
 
 		<div class="buttonGroup">
-			<div class="timeSelect" ng-class="{selected: domElements.timeSelected === '7:00'}" ng-click="selectTimePeriod('7:00')">7:00</div>
-			<div class="timeSelect" ng-class="{selected: domElements.timeSelected === '7:30'}" ng-click="selectTimePeriod('7:30')">7:30</div>
-			<div class="timeSelect" ng-class="{selected: domElements.timeSelected === '8:00'}" ng-click="selectTimePeriod('8:00')">8:00</div>
+			<div ng-repeat="period in domElements.timePeriods"class="timeSelect" ng-class="{selected: domElements.timeSelected === period}" ng-click="selectTimePeriod(period)">{{period}}</div>
 			<div class="timeSelect submit">Buy now for ${{domElements.mealPrice}}</div>
 		</div>
 
@@ -49,7 +47,7 @@
 			<h1>{{domElements.cook}}</h1>
 		</div>
 
-		<div class="DescriptionBlock">
+		<div class="DescriptionBlock" style="margin-bottom: 7%;">
 			<p>{{domElements.bio}}</p>
 		</div>
 		

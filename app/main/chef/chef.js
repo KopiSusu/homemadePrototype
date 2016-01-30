@@ -3,7 +3,9 @@
     .module('HomeMade')
     .controller('chefCtrl', chefCtrl);
 
-	function chefCtrl ($scope, $log, chefFactory, apiFactory) {
+	function chefCtrl ($scope, $log, $routeParams, chefFactory, apiFactory) {
+
+    var chefId = $routeParams.chefId;
 
     // Store Cooking Object, Private
     var _cooking = {};
@@ -14,13 +16,25 @@
     // ex. scope.domElements.meal = "whatever the meal name is"
     $scope.domElements = {};
 
-    // temp values still needed from API
-    $scope.domElements.availablity = "Mon. 9/18";
-    $scope.domElements.timeSelected = "7:30";
-
     //////////////////////////
     //// Private functions ///
     //////////////////////////
+    // user phonenumber = 2027143646;
+    var _loginUser = function (phoneNumber) {
+      chefFactory.loginUser(phoneNumber, "mouse")
+        .then(
+          function(user) { 
+            //Also send a push here!
+            _getChefDetails(user.id)
+
+            console.log(user);
+            // chefFactory.updateCooking(_cooking,servings); 
+          },
+          function(errorPayload) {
+            console.log(errorPayload);
+          }
+      ); 
+    }
 
     //Create a request for an eater.
     var _createRequest = function (cooking, eater, servings) {
@@ -39,8 +53,8 @@
         );   
     }
 
-    var _getChefDetails = function () {
-      chefFactory.getCooking('ceVN2FoR79')
+    var _getChefDetails = function (id) {
+      chefFactory.getCooking(id)
         .then(
           function(cooking) { 
             _cooking = cooking;
@@ -56,6 +70,7 @@
             $scope.domElements.userAddress.city = cooking.get("cook").get("city");
             $scope.domElements.userAddress.state = cooking.get("cook").get("state"); 
             $scope.domElements.availablity = (cooking.get("start").getMonth() + 1 ) + "/" + cooking.get("start").getDay();
+            $scope.domElements.timePeriods = _getTimePeriods(cooking.get("start"), cooking.get("end"));
             $scope.domElements.day = days[cooking.get("start").getDay()].substring(0, 3) + ".";
           },
           function(errorPayload) {
@@ -64,7 +79,26 @@
         );   
     }
 
-    _getChefDetails();
+    var _getTimePeriods = function (start, end) {
+      var middle;
+      var returnArray = [];
+      middle = new Date((start.getTime() + end.getTime()) / 2);
+      returnArray = [start, middle, end];
+      returnArray = returnArray.map(function(date) {
+        var minutes = date.getMinutes();
+        var hours = date.getHours();
+        if(minutes < 2) {
+          minutes = "0" + minutes;
+        }
+        if(hours > 12) {
+          hours = hours - 12;
+        }
+        return hours + ":" + minutes;
+      })
+      $scope.domElements.timeSelected = returnArray[1];
+      return returnArray;
+      }
+
 
     /////////////////////////
     //// Public functions ///
@@ -134,6 +168,8 @@
           }
       );
     */
+
+    _loginUser(chefId);
 
   }
 

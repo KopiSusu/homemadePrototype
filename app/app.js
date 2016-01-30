@@ -17,7 +17,7 @@
     		// $route.current.templateUrl = '/pages/' + $routeParams.name + ".html";
 
 		    $routeProvider
-		    	.when('/chef', {
+		    	.when('/chef/:chefId', {
 		        	templateUrl: 'app/main/chef/chef.html',
 		        	controller: 'chefCtrl'
 		      	})
