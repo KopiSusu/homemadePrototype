@@ -198,6 +198,7 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .summaryBlock .shortLine h1 {
   font-size: 4vw;
   margin: 5%;
+  white-space: nowrap;
   float: right;
 }
 

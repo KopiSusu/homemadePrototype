@@ -62,7 +62,7 @@
 		</div>
 		<div class="summaryBlock">
 			<p>{{domElements.day}} {{domElements.availablity}} at</p><input value="{{domElements.timeSelected}}"><br>
-			<p>Number of Servings</p><input class="servings" value="1"><br>
+			<p>Number of Servings</p><input class="servings" value="1" ng-model="domElements.servings" ng-change="calculateFoodCost()"><br>
 			<p>Promotional Code</p><input><br>
 		</div>
 		<span class="horizontalLine">
@@ -73,10 +73,10 @@
 
 	<section id="paymentDetails" class="Container">
 		<div class="summaryBlock">
-			<p>FOOD DONATION</p> <p class="priceSums"> ${{domElements.mealPrice}} </p> <br>
-			<p>SERVICE FEE(9%)</p><p class="priceSums"> ${{domElements.mealPrice}} </p><br>
-			<p>TOTAL DISCOUNTS</p><p class="priceSums"> ${{domElements.mealPrice}} </p><br>
-			<div class="shortLine"><h1>TOTAL: ${{domElements.mealPrice}}</h1></div><br>
+			<p>FOOD DONATION</p> <p class="priceSums"> ${{domElements.totalFoodCost}} </p> <br>
+			<p>SERVICE FEE(9%)</p><p class="priceSums"> ${{domElements.tax}} </p><br>
+			<p>TOTAL DISCOUNTS</p><p class="priceSums"> ${{domElements.discounts}} </p><br>
+			<div class="shortLine"><h1>TOTAL: ${{domElements.total}}</h1></div><br>
 		</div>
 		<div class="cardDetails">
 			<input id="phoneNumber" placeholder="(555)-555-5555"><input id="email" placeholder="email"><br>

@@ -16,6 +16,9 @@
     // Attach all elements that need to be passed to the dom to this object, Public
     // ex. scope.domElements.meal = "whatever the meal name is"
     $scope.domElements = {};
+    $scope.domElements.discounts = 0;
+    $scope.domElements.totalFoodCost = 0;
+    $scope.domElements.servings = 1;
 
     //////////////////////////
     //// Private functions ///
@@ -98,7 +101,21 @@
       })
       $scope.domElements.timeSelected = returnArray[1];
       return returnArray;
-      }
+    }
+
+    var _calculateTax = function () {
+      $scope.domElements.tax = (parseFloat($scope.domElements.totalFoodCost) * 0.09).toFixed(2);
+    }
+
+    var _calculateTotal = function () {
+      $scope.domElements.total = parseFloat($scope.domElements.tax) + parseFloat($scope.domElements.totalFoodCost) + parseFloat($scope.domElements.discounts); 
+    }
+
+    $scope.calculateFoodCost = function () {
+      $scope.domElements.totalFoodCost = $scope.domElements.mealPrice * $scope.domElements.servings;
+      _calculateTax();
+      _calculateTotal();
+    }
 
 
     /////////////////////////
@@ -111,6 +128,9 @@
 
     $scope.submitOrder = function () {
       var _selectedPeriod = $scope.domElements.timeSelected;
+      $scope.domElements.totalFoodCost = $scope.domElements.mealPrice;
+      _calculateTax();
+      _calculateTotal();
       $rootScope.paymentOpen = true;   
     }
 
