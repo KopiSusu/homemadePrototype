@@ -4,7 +4,7 @@ html, body {
   color: rgba(0,0,0,.6);
   font-color: #555;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
+  overflow: hidden;
   -webkit-font-smoothing: subpixel-antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -33,7 +33,13 @@ html, body {
   height: 100%;
   width: 100%;
   top: 0;
+  opacity: 1;
+  overflow: auto;
   text-align: center;
+  transition: all 5.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#mainPage #ChefPartial.ng-hide {
+  opacity: 0;
 }
 #mainPage #ChefPartial .Container {
   width: 100%;
@@ -46,11 +52,11 @@ html, body {
   margin: 0;
   color: rgba(0,0,0,.7);
 }
-#mainPage #ChefPartial .Container .horizontalLine {
+.horizontalLine {
   width: 100%;
   position: relative;
 }
-#mainPage #ChefPartial .Container .horizontalLine .text {
+.horizontalLine .text {
   background: #f0f0f0;
   padding: 0% 3%;
   font-size: 4vw;
@@ -59,7 +65,7 @@ html, body {
   display: inline-block;
   color: rgba(0,0,0,.7);
 }
-#mainPage #ChefPartial .Container .horizontalLine .line {
+.horizontalLine .line {
   width: 80%;
   margin: 0% 10%;
   border-bottom: 3px solid;
@@ -85,28 +91,29 @@ html, body {
   position: relative;
 }
 
-#mainPage #ChefPartial .Container .buttonGroup .timeSelect {
-    display: inline-block;
-    width: 22%;
-    margin-bottom: 0;
-    height: 7vw;
-    border: 4px solid;
-    font-weight: 500;
-    font-size: 5vw;
-    line-height: 7vw;
-    margin: 0% 2%;
-    cursor: pointer;
+.timeSelect {
+  display: inline-block;
+  width: 22%;
+  margin-bottom: 0;
+  height: 7vw;
+  border: 4px solid;
+  font-weight: 500;
+  font-size: 5vw;
+  line-height: 7vw;
+  margin: 0% 2%;
+  cursor: pointer;
 }
-#mainPage #ChefPartial .Container .buttonGroup .timeSelect.selected {
+.timeSelect.selected {
   color: #f0f0f0;
   background: rgba(0,0,0,.7);
   border: 4px solid rgba(0,0,0,0.1);
 } 
-#mainPage #ChefPartial .Container .buttonGroup .timeSelect.submit {
+.timeSelect.submit {
   display: block;
   width: 45%;
   margin: 3% 27.5% 4%;
   font-weight: 300;
+  text-align: center;
   font-size: 4vw;
   background: #85C597;
   color: #f0f0f0;
@@ -118,13 +125,113 @@ html, body {
   margin-top: 0%;
 }
 #mainPage #ChefPartial .Container .cookImg {
-position: absolute;
-    width: 14%;
-    left: 16%;
-    top: 5%;
-    border-radius: 50%;
+  position: absolute;
+  width: 14%;
+  left: 16%;
+  top: 5%;
+  border-radius: 50%;
 }
 
+#mainPage #paymentPartial {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  overflow: auto;
+  background: #f0f0f0;
+  border-bottom: 1px solid;
+  height: 100%;
+  transition: all 5.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#mainPage #paymentPartial.ng-hide {
+  top: auto;
+  bottom: 200%;
+}
+
+#mainPage #paymentPartial .Container .titleBlock {
+  padding: 5%;
+}
+#mainPage #paymentPartial .Container .titleBlock h1 {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 5vw;
+  padding: 0px 5%;
+  margin-top: 0;
+}
+#mainPage #paymentPartial .Container .titleBlock img {
+  display: inline-block;
+  max-width: 40%;
+}
+#mainPage #paymentPartial .Container .summaryBlock {
+  padding: 0% 10% 5% 10%;
+}
+#mainPage #paymentPartial .Container .summaryBlock p{
+  font-size: 4vw;
+  margin-top: 0%;
+  display: inline-block;
+}
+#mainPage #paymentPartial .Container .summaryBlock input{
+  font-size: 4vw;
+  float: right;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  width: 20%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .summaryBlock p {
+  margin: 0;
+}
+#mainPage #paymentPartial #paymentDetails.Container .summaryBlock p.priceSums {
+  font-size: 4vw;
+  float: right;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  width: 20%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .summaryBlock .shortLine {
+  border-top: 3px solid;
+  float: right;
+  width: 35%;
+  padding: 0% 5%;
+  margin: 3% 0%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .summaryBlock .shortLine h1 {
+  font-size: 4vw;
+  margin: 5%;
+  float: right;
+}
+
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails {
+  padding: 5%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input {
+    font-size: 5vw;
+    border-radius: 10px;
+    border: none;
+    padding: 1% 3%;
+    width: 20%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#phoneNumber {
+  width: 50%;
+  margin: 0% 3%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#email {
+  width: 40%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardNumber {
+  margin: 5% 3%;
+  width: 55%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#csv {
+  width: 36%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardDate {
+  margin: 0 2%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .bottomText{
+  font-size: 4vw;
+  text-align: center;
+}
 /*​------------- Scrollbar ---------------*/
 ::-webkit-scrollbar {
    width: 8px;

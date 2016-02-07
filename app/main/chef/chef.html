@@ -1,6 +1,5 @@
 <section id="ChefPartial">
-
-	<section id="MealDescriptionBlock" class="Container">
+	<section id="MealDescriptionBlock" class="Container" ng-show="!paymentOpen">
 
 		<div class="TitleBlock">
 			<h1>{{domElements.cook}}'S KITCHEN</h1>
@@ -28,7 +27,7 @@
 
 		<div class="buttonGroup">
 			<div ng-repeat="period in domElements.timePeriods"class="timeSelect" ng-class="{selected: domElements.timeSelected === period}" ng-click="selectTimePeriod(period)">{{period}}</div>
-			<div class="timeSelect submit">Buy now for ${{domElements.mealPrice}}</div>
+			<div class="timeSelect submit" ng-click="submitOrder()">Buy now for ${{domElements.mealPrice}}</div>
 		</div>
 
 		<span class="horizontalLine">
@@ -53,4 +52,38 @@
 		
 	</section>
 
+</section>
+
+<section id="PaymentPartial" ng-show="paymentOpen">
+	<section id="orderSummary" class="Container">
+		<div class="TitleBlock">
+			<img ng-src="{{domElements.imgSrc}}" alt="Image" class="cookImg"></img>
+			<h1>{{domElements.meal}} <br> By {{domElements.cook}}</h1>
+		</div>
+		<div class="summaryBlock">
+			<p>{{domElements.day}} {{domElements.availablity}} at</p><input value="{{domElements.timeSelected}}"><br>
+			<p>Number of Servings</p><input class="servings" value="1"><br>
+			<p>Promotional Code</p><input><br>
+		</div>
+		<span class="horizontalLine">
+			<div class="line"></div>
+			<h3 class="text" style="margin-left: 32%;">Order Summary</h3>
+		</span>
+	</section>
+
+	<section id="paymentDetails" class="Container">
+		<div class="summaryBlock">
+			<p>FOOD DONATION</p> <p class="priceSums"> ${{domElements.mealPrice}} </p> <br>
+			<p>SERVICE FEE(9%)</p><p class="priceSums"> ${{domElements.mealPrice}} </p><br>
+			<p>TOTAL DISCOUNTS</p><p class="priceSums"> ${{domElements.mealPrice}} </p><br>
+			<div class="shortLine"><h1>TOTAL: ${{domElements.mealPrice}}</h1></div><br>
+		</div>
+		<div class="cardDetails">
+			<input id="phoneNumber" placeholder="(555)-555-5555"><input id="email" placeholder="email"><br>
+			<input id="cardNumber" placeholder="card number"><input id="csv" placeholder="csv"><br>
+			<input id="cardDate" placeholder="date">
+		</div>
+		<div class="timeSelect submit">Buy Now</div>
+		<p class="bottomText">(We will send you the cooks pickup location!)</p>
+	</section>
 </section>

@@ -3,9 +3,10 @@
     .module('HomeMade')
     .controller('chefCtrl', chefCtrl);
 
-	function chefCtrl ($scope, $log, $routeParams, chefFactory, apiFactory) {
+	function chefCtrl ($scope, $log, $rootScope, $routeParams, chefFactory, apiFactory) {
 
     var chefId = $routeParams.chefId;
+    $rootScope.paymentOpen = false;
 
     // Store Cooking Object, Private
     var _cooking = {};
@@ -106,6 +107,11 @@
 
     $scope.selectTimePeriod = function (time) {
       $scope.domElements.timeSelected = time;
+    }
+
+    $scope.submitOrder = function () {
+      var _selectedPeriod = $scope.domElements.timeSelected;
+      $rootScope.paymentOpen = true;   
     }
 
     /* testing signup.
