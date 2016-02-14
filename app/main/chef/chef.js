@@ -10,6 +10,7 @@
 
     // Store Cooking Object, Private
     var _cooking = {};
+    var _currentUser = {};
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -102,13 +103,13 @@
     }
 
     var _checkIfCurrentUser = function () {
-      var currentUser = chefFactory.currentUser();
-      if(currentUser) {
+      _currentUser = chefFactory.currentUser();
+      if(_currentUser) {
         $scope.domElements.userInfo = {};
-        $scope.domElements.userInfo.stripId = currentUser.get("stripId");
-        $scope.domElements.userInfo.email = currentUser.get("email");
-        $scope.domElements.userInfo.phoneNumber = currentUser.get("username");
-        $scope.domElements.userInfo.cardNumber = "**** **** **** " + currentUser.get("lastFour");
+        $scope.domElements.userInfo.stripId = _currentUser.get("stripId");
+        $scope.domElements.userInfo.email = _currentUser.get("email");
+        $scope.domElements.userInfo.phoneNumber = _currentUser.get("username");
+        $scope.domElements.userInfo.cardNumber = "**** **** **** " + _currentUser.get("lastFour");
         $scope.domElements.userInfo.cvc = "***";
         $scope.domElements.userInfo.date = "";
       }
@@ -135,26 +136,38 @@
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
       // create stripe thing
-      var _month;
-      var _year;
-      _month = $scope.domElements.userInfo.date.split("/")[0];
-      if(_month.length < 2) {
-        _month = "0" + _month;
-      }
-      _year = $scope.domElements.userInfo.date.split("/")[1];
-
-      chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
-        .then(function (response) {
-          chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
-            .then(
-              function(result) { 
-                _submitPaymentUpdateCooking(result)
-              },
-              function(errorPayload) {
-                console.log(errorPayload);
-              }
+      if(_currentUser) {
+        chefFactory.createCustomer($scope.domElements.userInfo.stripId , $scope.domElements.userInfo.email)
+          .then(
+            function(result) { 
+              _submitPaymentUpdateCooking(result)
+            },
+            function(errorPayload) {
+              console.log(errorPayload);
+            }
           ); 
-        })
+      } else {
+        var _month;
+        var _year;
+        _month = $scope.domElements.userInfo.date.split("/")[0];
+        if(_month.length < 2) {
+          _month = "0" + _month;
+        }
+        _year = $scope.domElements.userInfo.date.split("/")[1];
+
+        chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
+          .then(function (response) {
+            chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
+              .then(
+                function(result) { 
+                  _submitPaymentUpdateCooking(result)
+                },
+                function(errorPayload) {
+                  console.log(errorPayload);
+                }
+            ); 
+          })
+      }
     }
 
     var _submitPaymentUpdateCooking = function (customerId) {
