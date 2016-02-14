@@ -5,6 +5,7 @@ angular
 function chefFactory($http, $rootScope, $q, $log) {
 
   	Parse.initialize("2JaqaPhXQ87McQQKGGEsCpv8zODw2C2j82mZSDeW", "TOjSospd3VmFRGFvKg9W0H5JvbElQoeh3QWzfbxm");
+  	Stripe.setPublishableKey('pk_test_Nx9eaN9m2BHbM8oz8J6fi8HZ');
 
   	///////////////////////////////////////
   	//// Public Functions To Be Shared ////
@@ -18,7 +19,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		cookingsQuery.include("meals");
 
 		var innerQuery = new Parse.Query(Parse.User);
-		innerQuery.equalTo("objectId", identifier);
+		innerQuery.equalTo("uniqueName", identifier);
 		cookingsQuery.matchesQuery("cook", innerQuery);
 		cookingsQuery.first().then(function(cooking) {
 	      if(cooking)
@@ -32,7 +33,8 @@ function chefFactory($http, $rootScope, $q, $log) {
 	};
 
 	var updateCooking = function (cooking, servings) {
-		//Update the requested servings.
+		//Update the requested servings.		
+		servings = parseInt(servings);
 		cooking.increment("requestedServings", servings);
 		cooking.save();
 	};
@@ -160,6 +162,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		return deferred.promise;
 	}
 
+	/// if current user changes payment for card
 	var updateCustomer = function (customerID, token) {
 		var deferred = $q.defer();
 		var cloudParams = {stripeId: token}
@@ -174,7 +177,19 @@ function chefFactory($http, $rootScope, $q, $log) {
 		});
 		return deferred.promise;
 	}
- 
+ 	
+ 	var addPayementOption = function (number, cvc, exp_month, exp_year) {
+ 		var deferred = $q.defer();
+ 		Stripe.card.createToken({
+			number: number,
+			cvc: cvc,
+			exp_month: exp_month,
+			exp_year: exp_year
+		}, function (status, response) {
+			deferred.resolve(response);
+		});
+		return deferred.promise;
+ 	}
 
 
 	/////////////////////////////////////
@@ -188,6 +203,7 @@ function chefFactory($http, $rootScope, $q, $log) {
     	signupUser: signupUser,
     	loginUser: loginUser,
     	currentUser: currentUser,
+    	addPayementOption: addPayementOption,
     	createCustomer: createCustomer,
     	updateCustomer: updateCustomer,
     	updateUser: updateUser

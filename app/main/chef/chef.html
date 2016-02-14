@@ -79,11 +79,13 @@
 			<div class="shortLine"><h1>TOTAL: ${{domElements.total}}</h1></div><br>
 		</div>
 		<div class="cardDetails">
-			<input id="phoneNumber" placeholder="(555)-555-5555"><input id="email" placeholder="email"><br>
-			<input id="cardNumber" placeholder="card number"><input id="csv" placeholder="csv"><br>
-			<input id="cardDate" placeholder="date">
+			<input id="phoneNumber" placeholder="(555)-555-5555" ng-model="domElements.userInfo.phoneNumber" value="{{domElements.userInfo.phoneNumber}}">
+			<input id="email" placeholder="email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}"><br>
+			<input id="cardNumber" placeholder="card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}">
+			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
+			<input id="cardDate" ng-model="domElements.userInfo.date" placeholder="date">
 		</div>
-		<div class="timeSelect submit">Buy Now</div>
+		<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
 		<p class="bottomText">(We will send you the cooks pickup location!)</p>
 	</section>
 </section>

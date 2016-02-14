@@ -23,22 +23,6 @@
     //////////////////////////
     //// Private functions ///
     //////////////////////////
-    // user phonenumber = 2027143646;
-    var _loginUser = function (phoneNumber) {
-      chefFactory.loginUser(phoneNumber, "mouse")
-        .then(
-          function(user) { 
-            //Also send a push here!
-            _getChefDetails(user.id)
-
-            console.log(user);
-            // chefFactory.updateCooking(_cooking,servings); 
-          },
-          function(errorPayload) {
-            console.log(errorPayload);
-          }
-      ); 
-    }
 
     //Create a request for an eater.
     var _createRequest = function (cooking, eater, servings) {
@@ -57,7 +41,7 @@
         );   
     }
 
-    var _getChefDetails = function (id) {
+    var _getChefCooking = function (id) {
       chefFactory.getCooking(id)
         .then(
           function(cooking) { 
@@ -117,6 +101,19 @@
       _calculateTotal();
     }
 
+    var _checkIfCurrentUser = function () {
+      var currentUser = chefFactory.currentUser();
+      if(currentUser) {
+        $scope.domElements.userInfo = {};
+        $scope.domElements.userInfo.stripId = currentUser.get("stripId");
+        $scope.domElements.userInfo.email = currentUser.get("email");
+        $scope.domElements.userInfo.phoneNumber = currentUser.get("username");
+        $scope.domElements.userInfo.cardNumber = "**** **** **** " + currentUser.get("lastFour");
+        $scope.domElements.userInfo.cvc = "***";
+        $scope.domElements.userInfo.date = "";
+      }
+    }
+
 
     /////////////////////////
     //// Public functions ///
@@ -133,6 +130,37 @@
       _calculateTotal();
       $rootScope.paymentOpen = true;   
     }
+
+    // submit credit card information
+    // currently creating new payment option, then creating customer, then updating cooking.
+    $scope.submitPayment = function () {
+      // create stripe thing
+      var _month;
+      var _year;
+      _month = $scope.domElements.userInfo.date.split("/")[0];
+      if(_month.length < 2) {
+        _month = "0" + _month;
+      }
+      _year = $scope.domElements.userInfo.date.split("/")[1];
+
+      chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
+        .then(function (response) {
+          chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
+            .then(
+              function(result) { 
+                _submitPaymentUpdateCooking(result)
+              },
+              function(errorPayload) {
+                console.log(errorPayload);
+              }
+          ); 
+        })
+    }
+
+    var _submitPaymentUpdateCooking = function (customerId) {
+      chefFactory.updateCooking(_cooking, $scope.domElements.servings) 
+    }
+
 
     /* testing signup.
       chefFactory.signupUser("101011", "mouse")
@@ -162,10 +190,7 @@
       ); 
     */  
 
-    /* Accessing the current user in the Parse Object
-    var currentUser = chefFactory.currentUser();
-    console.log(currentUser);
-    */
+     // Accessing the current user in the Parse Object
 
     /*Testing create customer with a fake token.
     chefFactory.createCustomer("cus_MikeToken", "mike@grazer.co")
@@ -195,7 +220,8 @@
       );
     */
 
-    _loginUser(chefId);
+    _checkIfCurrentUser();
+    _getChefCooking(chefId);
 
   }
 
