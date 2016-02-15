@@ -40,7 +40,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 	};
 
 	//Not fully implemented yet Need to attach eater to request.
-	var createRequest = function (cooking, eater, servings) {
+	var createRequest = function (cooking, eater, servings, time) {
 		var deferred = $q.defer();
 		var meal = cooking.get("meal");
 		var Request = Parse.Object.extend("Request");
@@ -51,7 +51,11 @@ function chefFactory($http, $rootScope, $q, $log) {
 		request.set("cooking", cooking);
 		request.set("meal", meal);
 		request.set("cook", cooking.get("cook"));
-		request.set("time", cooking.get("start"));
+		request.set("eater", eater);
+		console.log("time selected : " + time);
+		// request.set("time", time);
+		request.set("time", start);	
+		request.set("start", cooking.get("start"));
 		request.set("end", cooking.get("end"));
 		var mealDict = {imageURLS: meal.get("imageURLS"), objectId: meal.id, name: meal.get("name")};
 		var cartItems = [{addOns: [], meal: mealDict, price: meal.get("price"), servings: servings}];
@@ -70,7 +74,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 
 	var sendPushForRequest = function (request) {
 		var time = request.get("time");
-        var dateString = (date.getMonth() +1) + "/" + date.getDate();
+        var dateString = (time.getMonth() +1) + "/" + time.getDate();
 		var message = "An eater requested " + request.get("servings") + " servings on " + dateString + ".";
 		var pushQuery = new Parse.Query(Parse.Installation);
         pushQuery.equalTo("userId",request.get("cook").id);
@@ -84,6 +88,27 @@ function chefFactory($http, $rootScope, $q, $log) {
 		  		badge: "Increment"
 		  	}
 		});
+	}
+
+	var sendTextForRequest = function (request, cook) {
+		var time = request.get("time");
+        var dateString = (time.getMonth() +1) + "/" + time.getDate();
+		var message = "An eater requested " + request.get("servings") + " servings on " + dateString + ".";
+		
+		var phoneNumber = cook.get("username");
+
+
+        /*Send with twilio instead
+		Parse.Push.send({
+			where: pushQuery,
+		    data: {
+		  	  	alert: message,
+		    	type: "request",
+		  		objectId: request.get("cook").id,
+		  		badge: "Increment"
+		  	}
+		});
+		*/
 	}
 
 	//MARK Login & Signup Methods
@@ -206,7 +231,9 @@ function chefFactory($http, $rootScope, $q, $log) {
     	addPayementOption: addPayementOption,
     	createCustomer: createCustomer,
     	updateCustomer: updateCustomer,
-    	updateUser: updateUser
+    	updateUser: updateUser,
+    	sendPushForRequest: sendPushForRequest,
+    	sendTextForRequest: sendTextForRequest
     }
 
 };
