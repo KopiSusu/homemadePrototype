@@ -54,7 +54,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		request.set("eater", eater);
 		console.log("time selected : " + time);
 		// request.set("time", time);
-		request.set("time", start);	
+		request.set("time", cooking.get("start"));	
 		request.set("start", cooking.get("start"));
 		request.set("end", cooking.get("end"));
 		var mealDict = {imageURLS: meal.get("imageURLS"), objectId: meal.id, name: meal.get("name")};
@@ -95,20 +95,21 @@ function chefFactory($http, $rootScope, $q, $log) {
         var dateString = (time.getMonth() +1) + "/" + time.getDate();
 		var message = "An eater requested " + request.get("servings") + " servings on " + dateString + ".";
 		
-		var phoneNumber = cook.get("username");
+		var params = {
+						phoneNumber: cook.get("username"),
+					  	message: message 
+					};
 
+		Parse.Cloud.run('sendTwilioText', params, {
+		  success: function(response) {
+		  	console.log("Success : " + response);
+		    // ratings should be 4.5
+		  },
+		  error: function(error) {
+		  	console.log("error in cloud call : " + error);
 
-        /*Send with twilio instead
-		Parse.Push.send({
-			where: pushQuery,
-		    data: {
-		  	  	alert: message,
-		    	type: "request",
-		  		objectId: request.get("cook").id,
-		  		badge: "Increment"
-		  	}
+		  }
 		});
-		*/
 	}
 
 	//MARK Login & Signup Methods
