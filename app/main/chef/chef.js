@@ -10,12 +10,14 @@
 
     // Store Cooking Object, Private
     var _cooking = {};
-    var _currentUser = {};
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
     // Attach all elements that need to be passed to the dom to this object, Public
     // ex. scope.domElements.meal = "whatever the meal name is"
+    $scope.loginInfo = {};
+    $scope.loginInfo.password = "";
+    $scope.loginInfo.username = "";
     $scope.domElements = {};
     $scope.domElements.discounts = 0;
     $scope.domElements.totalFoodCost = 0;
@@ -88,15 +90,21 @@
       middle = new Date((start.getTime() + end.getTime()) / 2);
       returnArray = [start, middle, end];
       returnArray = returnArray.map(function(date) {
+        var returnObject = {};
         var minutes = date.getMinutes();
         var hours = date.getHours();
+
         if(minutes < 2) {
           minutes = "0" + minutes;
         }
-        if(hours > 12) {
+        if(hours === 0) {
+          hours = 12;
+        } else if(hours > 12) {
           hours = hours - 12;
         }
-        return hours + ":" + minutes;
+        returnObject.displayName = hours + ":" + minutes;
+        returnObject.dateValue = date;
+        return returnObject;
       })
       $scope.domElements.timeSelected = returnArray[1];
       return returnArray;
@@ -117,13 +125,15 @@
     }
 
     var _checkIfCurrentUser = function () {
-      _currentUser = chefFactory.currentUser();
-      if(_currentUser) {
+      if($scope.currentUser) {
+        $scope.currentUser = chefFactory.currentUser();
+      }
+      if($scope.currentUser) {
         $scope.domElements.userInfo = {};
-        $scope.domElements.userInfo.stripeId = _currentUser.get("stripeId");
-        $scope.domElements.userInfo.email = _currentUser.get("email");
-        $scope.domElements.userInfo.phoneNumber = _currentUser.get("username");
-        $scope.domElements.userInfo.cardNumber = "**** **** **** " + _currentUser.get("lastFour");
+        $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
+        $scope.domElements.userInfo.email = $scope.currentUser.get("email");
+        $scope.domElements.userInfo.phoneNumber = $scope.currentUser.get("username");
+        $scope.domElements.userInfo.cardNumber = "**** **** **** " + $scope.currentUser.get("lastFour");
         $scope.domElements.userInfo.cvc = "***";
         $scope.domElements.userInfo.date = "";
       }
@@ -146,15 +156,37 @@
       $rootScope.paymentOpen = true;   
     }
 
+    $scope.login = function () {
+      if($scope.loginInfo.username.length === 0) {
+        console.log('Username required');
+      } else if ($scope.loginInfo.password.length === 0) {
+        console.log('Password required');
+      } else {
+        chefFactory.loginUser($scope.loginInfo.username, $scope.loginInfo.password)
+          .then(
+            function(user) { 
+              //Also send a push here!
+              $scope.currentUser = user;
+              _checkIfCurrentUser();
+              // chefFactory.updateCooking(_cooking,servings); 
+            },
+            function(errorPayload) {
+              console.log(errorPayload);
+            }
+          ); 
+      }
+
+    }
+
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
       // create stripe thing
-      if(_currentUser) {
+      if($scope.currentUser) {
         if($scope.domElements.userInfo.stripeId)
         {
           console.log("Already have stripe ID " + $scope.domElements.userInfo.stripeId);
-          _createRequest(_cooking, _currentUser, $scope.domElements.servings);
+          _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
         } else {
           //Create customer and 
         chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
@@ -167,7 +199,7 @@
                     .then(
                       function(result) { 
                         //createRequest
-                        _createRequest(_cooking, _currentUser, $scope.domElements.servings);
+                        _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
                         console.log(result);
                       },
                       function(errorPayload) {
@@ -199,8 +231,8 @@
                   chefFactory.signupUser($scope.domElements.userInfo.phoneNumber, _randomHash())
                     .then(
                       function(user) { 
-                        _currentUser = user;
-                        _createRequest(_cooking, _currentUser, $scope.domElements.servings);
+                        $scope.currentUser = user;
+                        _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
                         console.log(user + " after logging in");
                         // chefFactory.updateCooking(_cooking,servings); 
                       },

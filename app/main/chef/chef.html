@@ -26,7 +26,7 @@
 		</span>
 
 		<div class="buttonGroup">
-			<div ng-repeat="period in domElements.timePeriods"class="timeSelect" ng-class="{selected: domElements.timeSelected === period}" ng-click="selectTimePeriod(period)">{{period}}</div>
+			<div ng-repeat="period in domElements.timePeriods"class="timeSelect" ng-class="{selected: domElements.timeSelected.displayName === period.displayName}" ng-click="selectTimePeriod(period)">{{period.displayName}}</div>
 			<div class="timeSelect submit" ng-click="submitOrder()">Buy now for ${{domElements.mealPrice}}</div>
 		</div>
 
@@ -61,7 +61,7 @@
 			<h1>{{domElements.meal}} <br> By {{domElements.cook}}</h1>
 		</div>
 		<div class="summaryBlock">
-			<p>{{domElements.day}} {{domElements.availablity}} at</p><input value="{{domElements.timeSelected}}"><br>
+			<p>{{domElements.day}} {{domElements.availablity}} at</p><input value="{{domElements.timeSelected.displayName}}"><br>
 			<p>Number of Servings</p><input class="servings" value="1" ng-model="domElements.servings" ng-change="calculateFoodCost()"><br>
 			<p>Promotional Code</p><input><br>
 		</div>
@@ -78,6 +78,11 @@
 			<p>TOTAL DISCOUNTS</p><p class="priceSums"> ${{domElements.discounts}} </p><br>
 			<div class="shortLine"><h1>TOTAL: ${{domElements.total}}</h1></div><br>
 		</div>
+		<div class="loginDetails" ng-show="!currentUser">
+			<input id="username" placeholder="Phone number" ng-model="domElements.currentUser.username">
+			<input id="password" placeholder="Password" ng-model="domElements.currentUser.password"><br>
+		</div>
+		<div class="timeSelect submit" ng-click="login()" ng-show="!currentUser">Login!</div>
 		<div class="cardDetails">
 			<input id="phoneNumber" placeholder="(555)-555-5555" ng-model="domElements.userInfo.phoneNumber" value="{{domElements.userInfo.phoneNumber}}">
 			<input id="email" placeholder="email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}"><br>
