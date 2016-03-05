@@ -25,15 +25,29 @@
     //// Private functions ///
     //////////////////////////
 
-    //Create a request for an eater.
+    //Create a request for an eater. Also updates the cooking and sends push etc...
     var _createRequest = function (cooking, eater, servings) {
-      chefFactory.createRequest(cooking, eater, servings)
+      //We have payment info and order info. 
+      //1. Create the request for the order
+      //2. Update the cooking with the relevant information
+      //3. Show confirmation on screen for the eater
+      //4. Send message to cook that the request has come in.
+
+      chefFactory.createRequest(cooking, eater, servings, $scope.domElements.timeSelected)
         .then(
           function(request) { 
-            //Also send a push here!
-            chefFactory.sendPushForRequest(request);
             console.log(request);
-            // chefFactory.updateCooking(_cooking,servings); 
+
+            console.log(_cooking.get("cook") + " : COOK");
+
+            //Send messages to the cook.
+            _sendMessagesForRequest(request);
+
+            //Update the cooking to increment servings.
+            chefFactory.updateCooking(_cooking,servings); 
+
+            //Change the UI to show the eater that they have successfully 
+
 
           },
           function(errorPayload) {
@@ -106,7 +120,7 @@
       _currentUser = chefFactory.currentUser();
       if(_currentUser) {
         $scope.domElements.userInfo = {};
-        $scope.domElements.userInfo.stripId = _currentUser.get("stripId");
+        $scope.domElements.userInfo.stripeId = _currentUser.get("stripeId");
         $scope.domElements.userInfo.email = _currentUser.get("email");
         $scope.domElements.userInfo.phoneNumber = _currentUser.get("username");
         $scope.domElements.userInfo.cardNumber = "**** **** **** " + _currentUser.get("lastFour");
@@ -137,15 +151,36 @@
     $scope.submitPayment = function () {
       // create stripe thing
       if(_currentUser) {
-        chefFactory.createCustomer($scope.domElements.userInfo.stripId , $scope.domElements.userInfo.email)
-          .then(
-            function(result) { 
-              _submitPaymentUpdateCooking(result)
-            },
-            function(errorPayload) {
-              console.log(errorPayload);
-            }
-          ); 
+        if($scope.domElements.userInfo.stripeId)
+        {
+          console.log("Already have stripe ID " + $scope.domElements.userInfo.stripeId);
+          _createRequest(_cooking, _currentUser, $scope.domElements.servings);
+        } else {
+          //Create customer and 
+        chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
+          .then(function (response) {
+            chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
+              .then(
+                function(stripeResult) { 
+                  //Update user
+                  chefFactory.updateUser({stripeId: stripeResult})
+                    .then(
+                      function(result) { 
+                        //createRequest
+                        _createRequest(_cooking, _currentUser, $scope.domElements.servings);
+                        console.log(result);
+                      },
+                      function(errorPayload) {
+                        console.log(errorPayload);
+                      }
+                  );
+                },
+                function(errorPayload) {
+                  console.log(errorPayload);
+                }
+            ); 
+          });
+        }
       } else {
         var _month;
         var _year;
@@ -159,8 +194,20 @@
           .then(function (response) {
             chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
               .then(
-                function(result) { 
-                  _submitPaymentUpdateCooking(result)
+                function(stripeResult) { 
+                  //Create a user here
+                  chefFactory.signupUser($scope.domElements.userInfo.phoneNumber, _randomHash())
+                    .then(
+                      function(user) { 
+                        _currentUser = user;
+                        _createRequest(_cooking, _currentUser, $scope.domElements.servings);
+                        console.log(user + " after logging in");
+                        // chefFactory.updateCooking(_cooking,servings); 
+                      },
+                      function(errorPayload) {
+                        console.log(errorPayload);
+                      }
+                  ); 
                 },
                 function(errorPayload) {
                   console.log(errorPayload);
@@ -171,7 +218,22 @@
     }
 
     var _submitPaymentUpdateCooking = function (customerId) {
+
+
       chefFactory.updateCooking(_cooking, $scope.domElements.servings) 
+    }
+
+
+    var _sendMessagesForRequest = function (request) {
+      //Send push and text
+      chefFactory.sendPushForRequest(request);
+      chefFactory.sendTextForRequest(request, _cooking.get("cook"));
+
+    }
+
+    var _randomHash = function () {
+      //Actually generate a random hash here to use as password.
+      return "mouse";
     }
 
 
