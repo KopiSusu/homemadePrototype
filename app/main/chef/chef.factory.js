@@ -127,7 +127,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		  },
 		  error: function(user, error) {
 		    // Show the error message somewhere and let the user try again.
-	      	deferred.reject(error);
+	      	deferred.reject(user);
 		  }
 		});
 		return deferred.promise;

@@ -220,11 +220,13 @@
                         _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
                       },
                       function(errorPayload) {
-                        toaster.pop('error', "Something went wrong!", errorPayload);
+                        console.log(errorPayload);
+                        toaster.pop('error', "Something went wrong!", "You have already made a request for this meal!");
                       }
                   );
                 },
                 function(errorPayload) {
+                  console.log(errorPayload);
                   toaster.pop('error', "Something went wrong!", errorPayload);
                 }
             ); 
@@ -254,11 +256,13 @@
                         // chefFactory.updateCooking(_cooking,servings); 
                       },
                       function(errorPayload) {
-                        toaster.pop('error', "Something went wrong!", errorPayload);
+                        console.log(errorPayload);
+                        toaster.pop('error', "Something went wrong!", "You have already made a request for this meal!");
                       }
                   ); 
                 },
                 function(errorPayload) {
+                  console.log(errorPayload);
                   toaster.pop('error', "Something went wrong!", errorPayload);
                 }
             ); 
