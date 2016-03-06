@@ -3,7 +3,7 @@
     .module('HomeMade')
     .controller('chefCtrl', chefCtrl);
 
-	function chefCtrl ($scope, $log, $rootScope, $routeParams, toaster, chefFactory, apiFactory) {
+	function chefCtrl ($scope, $log, $rootScope, $routeParams, toaster, chefFactory) {
 
     var chefId = $routeParams.chefId;
     $rootScope.paymentOpen = false;

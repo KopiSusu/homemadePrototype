@@ -6,12 +6,6 @@
     		'ngRoute',
     		'toaster', 
     		'HomeMade.chefFactory', 
-    		'HomeMade.mealFactory', 
-    		'HomeMade.userFactory',
-    		'HomeMade.apiFactory',
-    		'HomeMade.cookingService',
-    		'HomeMade.paymentFactory',
-    		'HomeMade.paymentService'
     	])
     	.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     		// This is how to change url and create custom routes. Super easy! add this anywhere in the app
