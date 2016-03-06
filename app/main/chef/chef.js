@@ -1,9 +1,17 @@
 (function () {
   angular
     .module('HomeMade')
-    .controller('chefCtrl', chefCtrl);
+    .controller('chefCtrl', chefCtrl)
 
-	function chefCtrl ($scope, $log, $rootScope, $routeParams, toaster, chefFactory) {
+	function chefCtrl ($scope, $log, $rootScope, $routeParams, $cookies, toaster, chefFactory) {
+    // for cookies, check out https://docs.angularjs.org/api/ngCookies/service/$cookies
+    // example
+    //
+    // Retrieving a cookie (key)
+    // var favoriteCookie = $cookies.get('myFavorite');
+    //
+    // Setting a cookie (key, value)
+    // $cookies.put('myFavorite', 'oatmeal');
 
     var chefId = $routeParams.chefId;
     $rootScope.paymentOpen = false;
@@ -40,6 +48,7 @@
     $scope.domElements.loginInfo = {};
     $scope.domElements.loginInfo.password = "";
     $scope.domElements.loginInfo.username = "";
+    $scope.domElements.pageLoading = false;
 
     //////////////////////////
     //// Private functions ///
@@ -65,6 +74,8 @@
 
             //Update the cooking to increment servings.
             chefFactory.updateCooking(_cooking,servings); 
+
+            $scope.domElements.pageLoading = false;
 
             //Change the UI to show the eater that they have successfully 
             toaster.pop('success', "Your order has been delivered to the chef", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
@@ -162,6 +173,16 @@
     //// Public functions ///
     /////////////////////////
 
+    $('select').on('change', function(e){ 
+       $(this).blur();
+       e.preventDefault(); 
+    });
+
+    $('input').on('change', function(e){ 
+       $(this).blur();
+       e.preventDefault(); 
+    });
+
     $scope.selectTimePeriod = function (time) {
       $scope.domElements.timeSelected = time;
     }
@@ -199,21 +220,31 @@
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
-      // create stripe thing
-      if($scope.currentUser) {
+      if(!$scope.domElements.userInfo || !$scope.domElements.userInfo.phoneNumber) {
+        toaster.pop('warning', "Phone number required");
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.email) {
+        toaster.pop('warning', "email required");
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cardNumber) {
+        toaster.pop('warning', "Card number required");
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cvc) {
+        toaster.pop('warning', "cvc required");
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.date) {
+        toaster.pop('warning', "exp. date required");
+      } else if($scope.currentUser) {
+        $scope.domElements.pageLoading = true;
         if($scope.domElements.userInfo.stripeId)
         {
           console.log("Already have stripe ID " + $scope.domElements.userInfo.stripeId);
           _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
         } else {
           //Create customer and 
-        chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
-          .then(function (response) {
-            chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
-              .then(
-                function(stripeResult) { 
-                  //Update user
-                  chefFactory.updateUser({stripeId: stripeResult})
+          chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
+            .then(function (response) {
+              chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
+                .then(
+                  function(stripeResult) { 
+                    //Update user
+                    chefFactory.updateUser({stripeId: stripeResult})
                     .then(
                       function(result) { 
                         //createRequest
@@ -222,17 +253,20 @@
                       function(errorPayload) {
                         console.log(errorPayload);
                         toaster.pop('error', "Something went wrong!", "You have already made a request for this meal!");
+                        $scope.domElements.pageLoading = false;
                       }
-                  );
-                },
-                function(errorPayload) {
-                  console.log(errorPayload);
-                  toaster.pop('error', "Something went wrong!", errorPayload);
-                }
-            ); 
-          });
+                    );
+                  },
+                  function(errorPayload) {
+                    console.log(errorPayload);
+                    toaster.pop('error', "Something went wrong!", errorPayload);
+                    $scope.domElements.pageLoading = false;
+                  }
+                ); 
+            });
         }
       } else {
+        $scope.domElements.pageLoading = true;
         var _month;
         var _year;
         _month = $scope.domElements.userInfo.date.split("/")[0];
@@ -258,12 +292,14 @@
                       function(errorPayload) {
                         console.log(errorPayload);
                         toaster.pop('error', "Something went wrong!", "You have already made a request for this meal!");
+                        $scope.domElements.pageLoading = false;
                       }
                   ); 
                 },
                 function(errorPayload) {
                   console.log(errorPayload);
                   toaster.pop('error', "Something went wrong!", errorPayload);
+                  $scope.domElements.pageLoading = false;
                 }
             ); 
           })

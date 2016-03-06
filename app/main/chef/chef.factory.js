@@ -52,7 +52,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		request.set("meal", meal);
 		request.set("cook", cooking.get("cook"));
 		request.set("eater", eater);
-		console.log("time selected : " + time);
+		console.log("time selected : " + time.dateValue);
 		// request.set("time", time);
 		request.set("time", cooking.get("start"));	
 		request.set("start", cooking.get("start"));

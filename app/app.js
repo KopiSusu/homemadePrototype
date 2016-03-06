@@ -4,7 +4,8 @@
     		'ngAnimate', 
     		'ui.bootstrap', 
     		'ngRoute',
-    		'toaster', 
+    		'toaster',
+    		'ngCookies', 
     		'HomeMade.chefFactory', 
     	])
     	.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
@@ -15,18 +16,6 @@
 		    	.when('/chef/:chefId', {
 		        	templateUrl: 'app/main/chef/chef.html',
 		        	controller: 'chefCtrl'
-		      	})
-		      	.when('/meal', {
-		        	templateUrl: 'app/main/meal/meal.html',
-		        	controller: 'mealCtrl'
-		      	})
-		      	.when('/user/signup', {
-		        	templateUrl: 'app/main/user/user.signup.html',
-		        	controller: 'userCtrl'
-		      	})
-		      	.when('/user', {
-		        	templateUrl: 'app/main/user/user.html',
-		        	controller: 'userCtrl'
 		      	})
 		      	.otherwise({
 		        	redirectTo: '/chef'

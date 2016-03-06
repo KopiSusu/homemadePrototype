@@ -1,4 +1,9 @@
 <section id="ChefPartial">
+	<div class="spinnerContainer gadgetStyle" ng-show="domElements.pageLoading">
+        <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+           <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        </svg>
+    </div>
 	<toaster-container toaster-options="{'position-class': 'toast-top-full-width'}"></toaster-container>
 	<section id="MealDescriptionBlock" class="Container" ng-show="!paymentOpen">
 
@@ -62,7 +67,11 @@
 			<h1>{{domElements.meal}} <br> By {{domElements.cook}}</h1>
 		</div>
 		<div class="summaryBlock">
-			<p>{{domElements.day}} {{domElements.availablity}} at</p><input value="{{domElements.timeSelected.displayName}}"><br>
+			<!-- <p>{{domElements.day}} {{domElements.availablity}} at</p><input value="{{domElements.timeSelected.displayName}}"> -->
+			<p>{{domElements.day}} {{domElements.availablity}} at</p>
+			<select>
+  				<option ng-repeat="period in domElements.timePeriods" value="domElements.timeSelected.displayName}" ng-click="selectTimePeriod(period)">{{period.displayName}}</option>
+			</select><br>	
 			<p>Number of Servings</p><input class="servings" value="1" ng-model="domElements.servings" ng-change="calculateFoodCost()"><br>
 			<p>Promotional Code</p><input><br>
 		</div>
@@ -89,7 +98,7 @@
 			<input id="email" placeholder="email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}"><br>
 			<input id="cardNumber" placeholder="card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}">
 			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
-			<input id="cardDate" ng-model="domElements.userInfo.date" placeholder="date">
+			<input id="cardDate" ng-model="domElements.userInfo.date" placeholder="mm/yy">
 		</div>
 		<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
 		<p class="bottomText">(We will send you the cooks pickup location!)</p>
