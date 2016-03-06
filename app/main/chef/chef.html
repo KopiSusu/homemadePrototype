@@ -1,4 +1,5 @@
 <section id="ChefPartial">
+	<toaster-container toaster-options="{'position-class': 'toast-top-full-width'}"></toaster-container>
 	<section id="MealDescriptionBlock" class="Container" ng-show="!paymentOpen">
 
 		<div class="TitleBlock">
@@ -79,8 +80,8 @@
 			<div class="shortLine"><h1>TOTAL: ${{domElements.total}}</h1></div><br>
 		</div>
 		<div class="loginDetails" ng-show="!currentUser">
-			<input id="username" placeholder="Phone number" ng-model="domElements.currentUser.username">
-			<input id="password" placeholder="Password" ng-model="domElements.currentUser.password"><br>
+			<input id="username" placeholder="Phone number" ng-model="domElements.loginInfo.username">
+			<input id="password" placeholder="Password" ng-model="domElements.loginInfo.password"><br>
 		</div>
 		<div class="timeSelect submit" ng-click="login()" ng-show="!currentUser">Login!</div>
 		<div class="cardDetails">

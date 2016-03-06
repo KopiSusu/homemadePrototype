@@ -19,6 +19,7 @@
     "angular-bootstrap": "~0.14.3",
     "bootstrap": "~3.3.5",
     "ngSmoothScroll": "~2.0.0",
-    "angular-route": "~1.4.8"
+    "angular-route": "~1.4.8",
+    "AngularJS-Toaster": "angularjs-toaster#~1.2.0"
   }
 }

@@ -266,3 +266,7 @@ html, body {
    border-right: 0px solid;
    background: #8e8e8e;
 }
+
+#toast-container {
+  font-size: xx-large;
+}

@@ -3,10 +3,28 @@
     .module('HomeMade')
     .controller('chefCtrl', chefCtrl);
 
-	function chefCtrl ($scope, $log, $rootScope, $routeParams, chefFactory, apiFactory) {
+	function chefCtrl ($scope, $log, $rootScope, $routeParams, toaster, chefFactory, apiFactory) {
 
     var chefId = $routeParams.chefId;
     $rootScope.paymentOpen = false;
+
+    toaster.options = {
+      "closeButton": false,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": false,
+      "positionClass": "toast-top-full-width",
+      "preventDuplicates": true,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+
 
     // Store Cooking Object, Private
     var _cooking = {};
@@ -15,13 +33,13 @@
 
     // Attach all elements that need to be passed to the dom to this object, Public
     // ex. scope.domElements.meal = "whatever the meal name is"
-    $scope.loginInfo = {};
-    $scope.loginInfo.password = "";
-    $scope.loginInfo.username = "";
     $scope.domElements = {};
     $scope.domElements.discounts = 0;
     $scope.domElements.totalFoodCost = 0;
     $scope.domElements.servings = 1;
+    $scope.domElements.loginInfo = {};
+    $scope.domElements.loginInfo.password = "";
+    $scope.domElements.loginInfo.username = "";
 
     //////////////////////////
     //// Private functions ///
@@ -49,11 +67,11 @@
             chefFactory.updateCooking(_cooking,servings); 
 
             //Change the UI to show the eater that they have successfully 
-
+            toaster.pop('success', "Your order has been delivered to the chef", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
 
           },
           function(errorPayload) {
-            console.log(errorPayload);
+            toaster.pop('error', "Something went wrong!", errorPayload);
           }
         );   
     }
@@ -157,12 +175,12 @@
     }
 
     $scope.login = function () {
-      if($scope.loginInfo.username.length === 0) {
-        console.log('Username required');
-      } else if ($scope.loginInfo.password.length === 0) {
-        console.log('Password required');
+      if($scope.domElements.loginInfo.username.length === 0) {
+        toaster.pop('warning', "Username required");
+      } else if ($scope.domElements.loginInfo.password.length === 0) {
+        toaster.pop('warning', "Password required");
       } else {
-        chefFactory.loginUser($scope.loginInfo.username, $scope.loginInfo.password)
+        chefFactory.loginUser($scope.domElements.loginInfo.username, $scope.loginInfo.password)
           .then(
             function(user) { 
               //Also send a push here!
@@ -171,7 +189,7 @@
               // chefFactory.updateCooking(_cooking,servings); 
             },
             function(errorPayload) {
-              console.log(errorPayload);
+              toaster.pop('error', "Something went wrong!", errorPayload);
             }
           ); 
       }
@@ -200,15 +218,14 @@
                       function(result) { 
                         //createRequest
                         _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
-                        console.log(result);
                       },
                       function(errorPayload) {
-                        console.log(errorPayload);
+                        toaster.pop('error', "Something went wrong!", errorPayload);
                       }
                   );
                 },
                 function(errorPayload) {
-                  console.log(errorPayload);
+                  toaster.pop('error', "Something went wrong!", errorPayload);
                 }
             ); 
           });
@@ -237,12 +254,12 @@
                         // chefFactory.updateCooking(_cooking,servings); 
                       },
                       function(errorPayload) {
-                        console.log(errorPayload);
+                        toaster.pop('error', "Something went wrong!", errorPayload);
                       }
                   ); 
                 },
                 function(errorPayload) {
-                  console.log(errorPayload);
+                  toaster.pop('error', "Something went wrong!", errorPayload);
                 }
             ); 
           })
@@ -278,7 +295,7 @@
             // chefFactory.updateCooking(_cooking,servings); 
           },
           function(errorPayload) {
-            console.log(errorPayload);
+            toaster.pop('error', "Something went wrong!", errorPayload);
           }
       ); 
     */  
@@ -292,7 +309,7 @@
             // chefFactory.updateCooking(_cooking,servings); 
           },
           function(errorPayload) {
-            console.log(errorPayload);
+            toaster.pop('error', "Something went wrong!", errorPayload);
           }
       ); 
     */  
@@ -308,7 +325,7 @@
             // chefFactory.updateCooking(_cooking,servings); 
           },
           function(errorPayload) {
-            console.log(errorPayload);
+            toaster.pop('error', "Something went wrong!", errorPayload);
           }
       ); 
     */
@@ -322,7 +339,7 @@
             // chefFactory.updateCooking(_cooking,servings); 
           },
           function(errorPayload) {
-            console.log(errorPayload);
+            toaster.pop('error', "Something went wrong!", errorPayload);
           }
       );
     */

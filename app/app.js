@@ -3,7 +3,8 @@
     	.module('HomeMade', [
     		'ngAnimate', 
     		'ui.bootstrap', 
-    		'ngRoute', 
+    		'ngRoute',
+    		'toaster', 
     		'HomeMade.chefFactory', 
     		'HomeMade.mealFactory', 
     		'HomeMade.userFactory',
