@@ -53,7 +53,7 @@
       //3. Show confirmation on screen for the eater
       //4. Send message to cook that the request has come in.
 
-      chefFactory.createRequest(cooking, eater, servings, $scope.domElements.timeSelected)
+      chefFactory.createRequest(cooking, eater, servings, $scope.domElements.timeSelected.dateValue)
         .then(
           function(request) { 
             console.log(request);
