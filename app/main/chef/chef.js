@@ -141,17 +141,19 @@
 
     // checks for current user, if none found in the controller it tries to get it from the factory. This does not make a request for the user.
     var _checkIfCurrentUser = function () {
+      // $scope.currentUser = chefFactory.currentUser();
       if($scope.currentUser) {
-        $scope.currentUser = chefFactory.currentUser();
-      }
-      if($scope.currentUser) {
+        console.log("Had a current user");
         $scope.domElements.userInfo = {};
         $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
         $scope.domElements.userInfo.email = $scope.currentUser.get("email");
         $scope.domElements.userInfo.phoneNumber = $scope.currentUser.get("username");
         $scope.domElements.userInfo.cardNumber = "**** **** **** " + $scope.currentUser.get("lastFour");
+        $scope.domElements.userInfo.password = $scope.currentUser.get("password");
         $scope.domElements.userInfo.cvc = "***";
         $scope.domElements.userInfo.date = $scope.currentUser.get("date");
+      } else {
+        console.log("Didn't have a current user");
       }
     }
 
@@ -208,8 +210,9 @@
       _lastFour = _lastFour.substring(_lastFour.length - 4);
       var userParms = {
         'lastFour': _lastFour,
-        'email': $scope.domElements.userInfo.email,
-        'date': $scope.domElements.userInfo.date
+        'email': $scope.domElements.userInfo.emaildate,
+        'date': $scope.domElements.userInfo.date,
+        'password': $scope.domElements.userInfo.password
       }
       if(!$scope.domElements.userInfo || !$scope.domElements.userInfo.phoneNumber) {
         toaster.pop('warning', "Phone number required");
@@ -221,12 +224,14 @@
         toaster.pop('warning', "cvc required");
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.date) {
         toaster.pop('warning', "exp. date required");
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.password) {
+        toaster.pop('warning', "Password required");
       } else if($scope.currentUser) {
         $scope.domElements.pageLoading = true;
         if($scope.domElements.userInfo.stripeId)
         {
           console.log("Already have stripe ID " + $scope.domElements.userInfo.stripeId);
-          _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
+          _createRequest(_cooking, $scope.currentUser, parseInt($scope.domElements.servings));
         } else {
           //Create customer and 
           chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
@@ -272,13 +277,26 @@
               .then(
                 function(stripeResult) { 
                   //Create a user here
-                  chefFactory.signupUser($scope.domElements.userInfo.phoneNumber, _randomHash())
+
+                  //Find or signup....
+
+                  chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.userInfo.password, $scope.domElements.userInfo.email)
                     .then(
                       function(user) { 
-                        chefFactory.updateUser(userParms);
-                        $scope.currentUser = user;
-                        _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
-                        console.log(user + " after logging in");
+                        chefFactory.updateUser(userParms)
+                          .then(
+                            function(updateUser) { 
+                              $scope.currentUser = updateUser;
+                              _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
+                              console.log(user + " after findOrSignup in");
+                            },
+                            function(errorPayload) {
+                              console.log(errorPayload);
+                              toaster.pop('error', "Something went wrong!", errorPayload);
+                              $scope.domElements.pageLoading = false;
+                            }
+                          );
+    
                         // chefFactory.updateCooking(_cooking,servings); 
                       },
                       function(errorPayload) {
@@ -286,7 +304,8 @@
                         toaster.pop('error', "Something went wrong!", "You have already made a request for this meal!");
                         $scope.domElements.pageLoading = false;
                       }
-                  ); 
+
+                  );
                 },
                 function(errorPayload) {
                   console.log(errorPayload);
@@ -306,7 +325,9 @@
     var _sendMessagesForRequest = function (request) {
       //Send push and text
       chefFactory.sendPushForRequest(request);
-      chefFactory.sendTextForRequest(request, _cooking.get("cook"));
+
+      //No need.
+      // chefFactory.sendTextForRequest(request, _cooking.get("cook"));
 
     }
 

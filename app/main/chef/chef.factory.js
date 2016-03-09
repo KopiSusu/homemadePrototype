@@ -135,6 +135,42 @@ function chefFactory($http, $rootScope, $q, $log) {
 		return deferred.promise;
 	}
 
+	var findOrSignupUser = function (phoneNumber, password, email) {
+		//Try to find a user. If it exists try to login. If it doesn't lets create it.
+		var deferred = $q.defer();
+
+		var userQuery = new Parse.Query(Parse.User);
+		userQuery.equalTo("username", phoneNumber);
+		userQuery.first().then(function(result) {
+	      if(result)
+	      {
+	      	console.log("User exists with phone number : " + phoneNumber);
+	      	loginUser(phoneNumber, password)
+	            .then(
+	              function(user) { 
+	               	deferred.resolve(user);
+	              },
+	              function(errorPayload) {
+	              	deferred.reject(errorPayload);
+	              }
+            ); 
+	      } else {
+	      	console.log("User didn't exist trying to signup with : " + phoneNumber);
+	      	debugger
+	      	signupUser(phoneNumber, password, email)
+	            .then(
+	              function(user) { 
+	               	deferred.resolve(user);
+	              },
+	              function(errorPayload) {
+	              	deferred.reject(errorPayload);
+	              }
+            ); 
+	      }
+	    });
+		return deferred.promise;
+	}
+
 	var loginUser = function (phoneNumber, password) {
 		var deferred = $q.defer();
 		// phoneNumber = phoneNumber.replace(/\D/g, '');
@@ -236,7 +272,8 @@ function chefFactory($http, $rootScope, $q, $log) {
     	updateCustomer: updateCustomer,
     	updateUser: updateUser,
     	sendPushForRequest: sendPushForRequest,
-    	sendTextForRequest: sendTextForRequest
+    	sendTextForRequest: sendTextForRequest,
+    	findOrSignupUser: findOrSignupUser
     }
 
 };
