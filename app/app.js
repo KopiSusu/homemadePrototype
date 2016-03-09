@@ -5,6 +5,7 @@
     		'ui.bootstrap', 
     		'ngRoute',
     		'toaster',
+    		'ngTouch',
     		'ngCookies', 
     		'HomeMade.chefFactory', 
     	])

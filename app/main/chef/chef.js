@@ -199,6 +199,11 @@
 
     }
 
+    // $scope.dragLeft = function (event) {
+    //   debugger
+    //   // jQuery('#paymentPartial').scrollLeft()
+    // }
+
     $scope.backToCooking = function () {
       $rootScope.paymentOpen = false;
     }
