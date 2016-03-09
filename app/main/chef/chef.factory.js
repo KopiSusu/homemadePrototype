@@ -184,6 +184,10 @@ function chefFactory($http, $rootScope, $q, $log) {
 		return deferred.promise;
 	}
 
+	var logoutUser = function () {
+		Parse.User.logOut();
+	}
+
 	var updateUser = function (params) {
 		var deferred = $q.defer();
 		var user = Parse.User.current();
@@ -270,7 +274,8 @@ function chefFactory($http, $rootScope, $q, $log) {
     	updateUser: updateUser,
     	sendPushForRequest: sendPushForRequest,
     	sendTextForRequest: sendTextForRequest,
-    	findOrSignupUser: findOrSignupUser
+    	findOrSignupUser: findOrSignupUser,
+    	logoutUser: logoutUser
     }
 
 };
