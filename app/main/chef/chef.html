@@ -1,20 +1,21 @@
-<section id="ChefPartial">
-	<!-- spinner -->
-	<div class="spinnerContainer gadgetStyle" ng-show="domElements.pageLoading">
-        <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-           <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-        </svg>
-    </div>
-    <!-- all the toasts -->
-	<toaster-container toaster-options="{'position-class': 'toast-top-full-width'}"></toaster-container>
+<!-- spinner -->
+<div class="spinnerContainer gadgetStyle" ng-show="domElements.pageLoading">
+    <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+       <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+    </svg>
+</div>
+<!-- all the toasts -->
+<toaster-container toaster-options="{'position-class': 'toast-top-full-width'}"></toaster-container>
 
-	<section id="FloatingNavvBlock" class="Container">
-		<div class="right" ng-show="paymentOpen">
-			<i class="material-icons" ng-click="backToCooking()">assignment_return</i>
-		</div>
-	</section>
+<section id="FloatingNavBlock" class="Container">
+	<div class="right" ng-show="paymentOpen">
+		<i class="material-icons" ng-click="backToCooking()">assignment_return</i>
+	</div>
+</section>
 
-	<section id="MealDescriptionBlock" class="Container" ng-show="!paymentOpen">
+<section id="ChefPartial" ng-show="!paymentOpen">
+
+	<section id="MealDescriptionBlock" class="Container">
 
 		<div class="TitleBlock">
 			<h1>{{domElements.cook}}'S KITCHEN</h1>
