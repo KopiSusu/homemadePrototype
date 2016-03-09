@@ -20,6 +20,6 @@
 		      	.otherwise({
 		        	redirectTo: '/chef'
 	     		});
-	     	// $locationProvider.html5Mode(true);
+	     	$locationProvider.html5Mode(true);
 	     }]);
 })();

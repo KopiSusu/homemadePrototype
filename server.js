@@ -1,9 +1,11 @@
-var express = require('express'),
-    app = express();
+var express = require('express');
+var app = express();
 
 app.use(express.static(__dirname + '/'));
 
-var server = require('http').Server(app);
+app.all('/*', function(req, res, next) {
+    // Just send the index.html for other files to support HTML5Mode
+    res.sendFile('index.html', { root: __dirname });
+});
 
-server.listen(80);
-
+app.listen(443); //the port you want to use
