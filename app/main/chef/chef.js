@@ -3,7 +3,7 @@
     .module('HomeMade')
     .controller('chefCtrl', chefCtrl)
 
-	function chefCtrl ($scope, $log, $rootScope, $routeParams, $cookies, toaster, chefFactory) {
+	function chefCtrl ($scope, $log, $rootScope, $routeParams, $cookies, $location, toaster, chefFactory) {
     // for cookies, check out https://docs.angularjs.org/api/ngCookies/service/$cookies
     // example
     //
@@ -12,7 +12,7 @@
     //
     // Setting a cookie (key, value)
     // $cookies.put('myFavorite', 'oatmeal');
-
+    
     var chefId = $routeParams.chefId;
     $rootScope.paymentOpen = false;
 
@@ -87,6 +87,8 @@
         );   
     }
 
+    // grabs the meal and chef data and attaches it to the dom.
+    // This function is run on page load.
     var _getChefCooking = function (id) {
       chefFactory.getCooking(id)
         .then(
@@ -113,6 +115,8 @@
         );   
     }
 
+    // Creates an array of three objects to be used as the start, middle, and end time periods (for purchase).
+    // Each period has displayName and dateValue.
     var _getTimePeriods = function (start, end) {
       var middle;
       var returnArray = [];
@@ -139,20 +143,20 @@
       return returnArray;
     }
 
+    // These three functions are used to caluculate tax and total pricing. Pretty strait forward just some simple mathamatics.
     var _calculateTax = function () {
       $scope.domElements.tax = (parseFloat($scope.domElements.totalFoodCost) * 0.09).toFixed(2);
     }
-
     var _calculateTotal = function () {
       $scope.domElements.total = parseFloat($scope.domElements.tax) + parseFloat($scope.domElements.totalFoodCost) + parseFloat($scope.domElements.discounts); 
     }
-
     $scope.calculateFoodCost = function () {
       $scope.domElements.totalFoodCost = $scope.domElements.mealPrice * $scope.domElements.servings;
       _calculateTax();
       _calculateTotal();
     }
 
+    // checks for current user, if none found in the controller it tries to get it from the factory. This does not make a request for the user.
     var _checkIfCurrentUser = function () {
       if($scope.currentUser) {
         $scope.currentUser = chefFactory.currentUser();
@@ -172,20 +176,13 @@
     /////////////////////////
     //// Public functions ///
     /////////////////////////
+    // These are the functions that can be attached to dom elements. //
 
-    $('select').on('change', function(e){ 
-       $(this).blur();
-       e.preventDefault(); 
-    });
-
-    $('input').on('change', function(e){ 
-       $(this).blur();
-       e.preventDefault(); 
-    });
-
+    // Selects desired time period and attaches it to object.
     $scope.selectTimePeriod = function (time) {
       $scope.domElements.timeSelected = time;
     }
+
 
     $scope.submitOrder = function () {
       var _selectedPeriod = $scope.domElements.timeSelected;

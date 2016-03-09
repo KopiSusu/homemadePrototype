@@ -5,5 +5,5 @@ app.use(express.static(__dirname + '/'));
 
 var server = require('http').Server(app);
 
-server.listen(8080);
+server.listen(80);
 
