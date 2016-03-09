@@ -156,7 +156,6 @@ function chefFactory($http, $rootScope, $q, $log) {
             ); 
 	      } else {
 	      	console.log("User didn't exist trying to signup with : " + phoneNumber);
-	      	debugger
 	      	signupUser(phoneNumber, password, email)
 	            .then(
 	              function(user) { 

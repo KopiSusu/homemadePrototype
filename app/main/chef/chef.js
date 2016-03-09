@@ -141,7 +141,8 @@
 
     // checks for current user, if none found in the controller it tries to get it from the factory. This does not make a request for the user.
     var _checkIfCurrentUser = function () {
-      // $scope.currentUser = chefFactory.currentUser();
+      $scope.currentUser = chefFactory.currentUser();
+
       if($scope.currentUser) {
         console.log("Had a current user");
         $scope.domElements.userInfo = {};
@@ -210,7 +211,7 @@
       _lastFour = _lastFour.substring(_lastFour.length - 4);
       var userParms = {
         'lastFour': _lastFour,
-        'email': $scope.domElements.userInfo.emaildate,
+        'email': $scope.domElements.userInfo.email,
         'date': $scope.domElements.userInfo.date,
         'password': $scope.domElements.userInfo.password
       }
@@ -230,7 +231,6 @@
         $scope.domElements.pageLoading = true;
         if($scope.domElements.userInfo.stripeId)
         {
-          console.log("Already have stripe ID " + $scope.domElements.userInfo.stripeId);
           _createRequest(_cooking, $scope.currentUser, parseInt($scope.domElements.servings));
         } else {
           //Create customer and 
@@ -240,7 +240,8 @@
                 .then(
                   function(stripeResult) { 
                     //Update user
-                    chefFactory.updateUser({stripeId: stripeResult})
+                    userParms.stripeId = stripeResult;
+                    chefFactory.updateUser(userParms)
                     .then(
                       function(result) { 
                         //createRequest
@@ -279,7 +280,7 @@
                   //Create a user here
 
                   //Find or signup....
-
+                  userParms.stripeId = stripeResult;
                   chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.userInfo.password, $scope.domElements.userInfo.email)
                     .then(
                       function(user) { 
