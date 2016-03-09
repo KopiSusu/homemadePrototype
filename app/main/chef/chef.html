@@ -102,10 +102,10 @@
 		</div>
 		<div class="timeSelect submit" ng-click="login()" ng-show="!currentUser">Login!</div>
 		<div class="cardDetails">
-			<input id="phoneNumber" placeholder="Phone number" ng-model="domElements.userInfo.phoneNumber" value="{{domElements.userInfo.phoneNumber}}" type="number" step="any" min="0">
+			<input id="phoneNumber" placeholder="Phone number" ng-model="domElements.userInfo.phoneNumber" value="{{domElements.userInfo.phoneNumber}}">
 			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}"><br>
-			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" type="number" step="any" min="0">
-			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}" type="number" step="any" min="0"><br>
+			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}">
+			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
 			<input id="cardDate" ng-model="domElements.userInfo.date" placeholder="mm/yy">
 		</div>
 		<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>

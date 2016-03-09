@@ -18,6 +18,7 @@
 
     // Store Cooking Object, Private
     var _cooking = {};
+    var _lastFour;
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -150,7 +151,7 @@
         $scope.domElements.userInfo.phoneNumber = $scope.currentUser.get("username");
         $scope.domElements.userInfo.cardNumber = "**** **** **** " + $scope.currentUser.get("lastFour");
         $scope.domElements.userInfo.cvc = "***";
-        $scope.domElements.userInfo.date = "";
+        $scope.domElements.userInfo.date = $scope.currentUser.get("date");
       }
     }
 
@@ -180,7 +181,7 @@
       } else if ($scope.domElements.loginInfo.password.length === 0) {
         toaster.pop('warning', "Password required");
       } else {
-        chefFactory.loginUser($scope.domElements.loginInfo.username, $scope.loginInfo.password)
+        chefFactory.loginUser($scope.domElements.loginInfo.username, $scope.domElements.loginInfo.password)
           .then(
             function(user) { 
               //Also send a push here!
@@ -196,11 +197,6 @@
 
     }
 
-    // $scope.dragLeft = function (event) {
-    //   debugger
-    //   // jQuery('#paymentPartial').scrollLeft()
-    // }
-
     $scope.backToCooking = function () {
       $rootScope.paymentOpen = false;
     }
@@ -208,6 +204,13 @@
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
+      _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
+      _lastFour = _lastFour.substring(_lastFour.length - 4);
+      var userParms = {
+        'lastFour': _lastFour,
+        'email': $scope.domElements.userInfo.email,
+        'date': $scope.domElements.userInfo.date
+      }
       if(!$scope.domElements.userInfo || !$scope.domElements.userInfo.phoneNumber) {
         toaster.pop('warning', "Phone number required");
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.email) {
@@ -272,6 +275,7 @@
                   chefFactory.signupUser($scope.domElements.userInfo.phoneNumber, _randomHash())
                     .then(
                       function(user) { 
+                        chefFactory.updateUser(userParms);
                         $scope.currentUser = user;
                         _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
                         console.log(user + " after logging in");
@@ -295,8 +299,6 @@
     }
 
     var _submitPaymentUpdateCooking = function (customerId) {
-
-
       chefFactory.updateCooking(_cooking, $scope.domElements.servings) 
     }
 
