@@ -18,6 +18,7 @@
 
     // Store Cooking Object, Private
     var _cooking = {};
+    var _lastFour;
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -144,14 +145,14 @@
 
       if($scope.currentUser) {
         console.log("Had a current user");
-
         $scope.domElements.userInfo = {};
         $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
         $scope.domElements.userInfo.email = $scope.currentUser.get("email");
         $scope.domElements.userInfo.phoneNumber = $scope.currentUser.get("username");
         $scope.domElements.userInfo.cardNumber = "**** **** **** " + $scope.currentUser.get("lastFour");
+        $scope.domElements.userInfo.password = $scope.currentUser.get("password");
         $scope.domElements.userInfo.cvc = "***";
-        $scope.domElements.userInfo.date = "";
+        $scope.domElements.userInfo.date = $scope.currentUser.get("date");
       } else {
         console.log("Didn't have a current user");
       }
@@ -183,7 +184,7 @@
       } else if ($scope.domElements.loginInfo.password.length === 0) {
         toaster.pop('warning', "Password required");
       } else {
-        chefFactory.loginUser($scope.domElements.loginInfo.username, $scope.loginInfo.password)
+        chefFactory.loginUser($scope.domElements.loginInfo.username, $scope.domElements.loginInfo.password)
           .then(
             function(user) { 
               //Also send a push here!
@@ -199,11 +200,6 @@
 
     }
 
-    // $scope.dragLeft = function (event) {
-    //   debugger
-    //   // jQuery('#paymentPartial').scrollLeft()
-    // }
-
     $scope.backToCooking = function () {
       $rootScope.paymentOpen = false;
     }
@@ -211,6 +207,14 @@
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
+      _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
+      _lastFour = _lastFour.substring(_lastFour.length - 4);
+      var userParms = {
+        'lastFour': _lastFour,
+        'email': $scope.domElements.userInfo.email,
+        'date': $scope.domElements.userInfo.date,
+        'password': $scope.domElements.userInfo.password
+      }
       if(!$scope.domElements.userInfo || !$scope.domElements.userInfo.phoneNumber) {
         toaster.pop('warning', "Phone number required");
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.email) {
@@ -221,11 +225,12 @@
         toaster.pop('warning', "cvc required");
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.date) {
         toaster.pop('warning', "exp. date required");
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.password) {
+        toaster.pop('warning', "Password required");
       } else if($scope.currentUser) {
         $scope.domElements.pageLoading = true;
         if($scope.domElements.userInfo.stripeId)
         {
-          console.log("Already have stripe ID " + $scope.domElements.userInfo.stripeId);
           _createRequest(_cooking, $scope.currentUser, parseInt($scope.domElements.servings));
         } else {
           //Create customer and 
@@ -235,7 +240,8 @@
                 .then(
                   function(stripeResult) { 
                     //Update user
-                    chefFactory.updateUser({stripeId: stripeResult})
+                    userParms.stripeId = stripeResult;
+                    chefFactory.updateUser(userParms)
                     .then(
                       function(result) { 
                         //createRequest
@@ -274,13 +280,24 @@
                   //Create a user here
 
                   //Find or signup....
-
-                  chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.loginInfo.password, email)
+                  userParms.stripeId = stripeResult;
+                  chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.userInfo.password, $scope.domElements.userInfo.email)
                     .then(
-                    function(user) { 
-                        $scope.currentUser = user;
-                        _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
-                        console.log(user + " after findOrSignup in");
+                      function(user) { 
+                        chefFactory.updateUser(userParms)
+                          .then(
+                            function(updateUser) { 
+                              $scope.currentUser = updateUser;
+                              _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
+                              console.log(user + " after findOrSignup in");
+                            },
+                            function(errorPayload) {
+                              console.log(errorPayload);
+                              toaster.pop('error', "Something went wrong!", errorPayload);
+                              $scope.domElements.pageLoading = false;
+                            }
+                          );
+    
                         // chefFactory.updateCooking(_cooking,servings); 
                       },
                       function(errorPayload) {
@@ -302,8 +319,6 @@
     }
 
     var _submitPaymentUpdateCooking = function (customerId) {
-
-
       chefFactory.updateCooking(_cooking, $scope.domElements.servings) 
     }
 

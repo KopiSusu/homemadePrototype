@@ -264,6 +264,9 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardDate {
   margin: 0 3%;
 }
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#password {
+  width: 70%;
+}
 #mainPage #paymentPartial #paymentDetails.Container .bottomText{
   font-size: 4vw;
   text-align: center;

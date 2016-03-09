@@ -21,6 +21,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		var innerQuery = new Parse.Query(Parse.User);
 		innerQuery.equalTo("uniqueName", identifier);
 		cookingsQuery.matchesQuery("cook", innerQuery);
+
 		cookingsQuery.first().then(function(cooking) {
 	      if(cooking)
 	      {
@@ -29,11 +30,12 @@ function chefFactory($http, $rootScope, $q, $log) {
 	      	deferred.reject("Unable to get a cooking");
 	      }
 	    });
+
 	    return deferred.promise;
 	};
 
 	var updateCooking = function (cooking, servings) {
-		//Update the requested servings.		
+		//Update the requested servings.
 		servings = parseInt(servings);
 		cooking.increment("requestedServings", servings);
 		cooking.save();
@@ -53,7 +55,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		request.set("cook", cooking.get("cook"));
 		request.set("eater", eater);
 		// console.log("time selected : " + time.dateValue);
-		request.set("time", time.dateValue);
+		// request.set("time", time.dateValue);
 		request.set("time", cooking.get("start"));	
 		request.set("start", cooking.get("start"));
 		request.set("end", cooking.get("end"));
@@ -119,7 +121,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 		phoneNumber = phoneNumber.replace(/\D/g, '');
 		user.set("username", phoneNumber);
 		user.set("password", password);
-		// user.set("email", "email@example.com");
+		user.set("email", email);
 		user.signUp(null, {
 		  success: function(user) {
 		    // Hooray! Let them use the app now.
@@ -170,7 +172,7 @@ function chefFactory($http, $rootScope, $q, $log) {
 
 	var loginUser = function (phoneNumber, password) {
 		var deferred = $q.defer();
-		phoneNumber = phoneNumber.replace(/\D/g, '');
+		// phoneNumber = phoneNumber.replace(/\D/g, '');
 		Parse.User.logIn(phoneNumber, password, {
 		  success: function(user) {
 		    // Do stuff after successful login.
