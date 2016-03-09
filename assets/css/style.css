@@ -256,6 +256,21 @@ html, body {
   font-size: 4vw;
   text-align: center;
 }
+
+
+#mainPage #FloatingNavvBlock.container{
+  position: fixed;
+  right: 0;
+  width: auto;
+  z-index: 1;
+}
+#mainPage #ChefPartial #FloatingNavvBlock .right {
+  float: right;
+  margin: 5px 10px;
+}
+#mainPage #ChefPartial #FloatingNavvBlock .right i {
+  font-size: 10vw;  
+}
 /*​------------- Scrollbar ---------------*/
 ::-webkit-scrollbar {
     -webkit-appearance: none;

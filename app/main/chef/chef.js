@@ -12,7 +12,7 @@
     //
     // Setting a cookie (key, value)
     // $cookies.put('myFavorite', 'oatmeal');
-    
+
     var chefId = $routeParams.chefId;
     $rootScope.paymentOpen = false;
 
@@ -212,6 +212,10 @@
           ); 
       }
 
+    }
+
+    $scope.backToCooking = function () {
+      $rootScope.paymentOpen = false;
     }
 
     // submit credit card information

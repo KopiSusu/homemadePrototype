@@ -8,6 +8,12 @@
     <!-- all the toasts -->
 	<toaster-container toaster-options="{'position-class': 'toast-top-full-width'}"></toaster-container>
 
+	<section id="FloatingNavvBlock" class="Container">
+		<div class="right" ng-show="paymentOpen">
+			<i class="material-icons" ng-click="backToCooking()">assignment_return</i>
+		</div>
+	</section>
+
 	<section id="MealDescriptionBlock" class="Container" ng-show="!paymentOpen">
 
 		<div class="TitleBlock">
