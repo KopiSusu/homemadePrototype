@@ -319,9 +319,9 @@ html, body {
     width:100%;
     z-index: 1000;
     opacity:0.6;
-    -ms-transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
-    -webkit-transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+    -ms-transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .spinnerContainer.ng-hide {
     opacity:0;
@@ -364,6 +364,13 @@ html, body {
 
 #toast-container {
   font-size: large;
+}
+:not(.no-enter)#toast-container > div.ng-enter,
+:not(.no-leave)#toast-container > div.ng-leave
+{
+  -ms-transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)!important;
+  -webkit-transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)!important;
+  transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)!important;
 }
 
 input[type="text"]:focus, input[type="password"], textarea:focus, select:focus {   font-size: 16px;

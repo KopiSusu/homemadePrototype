@@ -16,24 +16,6 @@
     var chefId = $routeParams.chefId;
     $rootScope.paymentOpen = false;
 
-    toaster.options = {
-      "closeButton": false,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": false,
-      "positionClass": "toast-top-full-width",
-      "preventDuplicates": true,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "5000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-
-
     // Store Cooking Object, Private
     var _cooking = {};
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
