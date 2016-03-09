@@ -134,18 +134,19 @@ html, body {
 #mainPage #paymentPartial {
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   overflow: auto;
   background: #f0f0f0;
-  border-bottom: 1px solid;
+  border-right: 1px solid #e3e3e3;
   height: 100%;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #mainPage #paymentPartial.ng-hide {
-  -webkit-transform: translate3d(0, -100%, 0);
-  -moz-transform: translate3d(0, -100%, 0);
-  -ms-transform: translate3d(0, -100%, 0);
-  transform: translate3d(0, -100%, 0);
+  -webkit-transform: translate3d(-100%, 0, 0);
+  -moz-transform: translate3d(-100%, 0, 0);
+  -ms-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
 }
 
 #mainPage #paymentPartial .Container .titleBlock {
