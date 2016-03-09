@@ -8,4 +8,4 @@ app.all('/*', function(req, res, next) {
     res.sendFile('index.html', { root: __dirname });
 });
 
-app.listen(8080); //the port you want to use
+app.listen(80); //the port you want to use
