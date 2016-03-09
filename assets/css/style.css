@@ -281,7 +281,11 @@ html, body {
 }
 #mainPage #FloatingNavBlock .right {
   float: right;
-  margin: 5px 10px;
+  margin: 0px 5px;
+}
+#mainPage #FloatingNavBlock .right:first-of-type {
+  float: right;
+  margin: 5px 5px 0px;
 }
 #mainPage #FloatingNavBlock .right i {
   font-size: 10vw;  
@@ -294,10 +298,10 @@ html, body {
   transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 #mainPage #FloatingNavBlock .navButton.ng-hide {
-  -webkit-transform: translate3d(0, -100%, 0);
-  -moz-transform: translate3d(0, -100%, 0);
-  -ms-transform: translate3d(0, -100%, 0);
-  transform: translate3d(0, -100%, 0);
+  -webkit-transform: translate3d(0, -200%, 0);
+  -moz-transform: translate3d(0, -200%, 0);
+  -ms-transform: translate3d(0, -200%, 0);
+  transform: translate3d(0, -200%, 0);
 }
 /*​------------- Scrollbar ---------------*/
 ::-webkit-scrollbar {

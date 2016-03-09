@@ -11,6 +11,11 @@
 	<div class="right navButton" ng-show="paymentOpen">
 		<i class="material-icons" ng-click="backToCooking()">assignment_return</i>
 	</div>
+	<br>
+	<div class="right navButton" ng-show="paymentOpen && currentUser">
+		<i class="material-icons" ng-click="logoutUser()">exit_to_app</i>
+	</div>
+
 </section>
 
 <section id="ChefPartial" ng-show="!paymentOpen">

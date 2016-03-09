@@ -204,6 +204,14 @@
       $rootScope.paymentOpen = false;
     }
 
+    $scope.logoutUser = function () {
+      chefFactory.logoutUser();
+
+      $scope.domElements.userInfo = {};
+      
+      delete $scope.currentUser;
+    }
+
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
