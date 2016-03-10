@@ -18,6 +18,10 @@
 		        	templateUrl: 'app/main/chef/chef.html',
 		        	controller: 'chefCtrl'
 		      	})
+                .when('/:chefId', {
+                    templateUrl: 'app/main/chef/chef.html',
+                    controller: 'chefCtrl'
+                })
 		      	.otherwise({
 		        	redirectTo: '/cooks'
 	     		});
