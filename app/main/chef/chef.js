@@ -88,9 +88,10 @@
             $scope.domElements.userAddress = {};
             $scope.domElements.userAddress.city = cooking.get("cook").get("city");
             $scope.domElements.userAddress.state = cooking.get("cook").get("state"); 
-            $scope.domElements.availablity = (cooking.get("start").getMonth() + 1 ) + "/" + cooking.get("start").getDay();
+            $scope.domElements.availablity = (cooking.get("start").getMonth() + 1 ) + "/" + cooking.get("start").getDate();
             $scope.domElements.timePeriods = _getTimePeriods(cooking.get("start"), cooking.get("end"));
             $scope.domElements.day = days[cooking.get("start").getDay()].substring(0, 3) + ".";
+            console.log(cooking.get("start") + " is the cooking start.");
           },
           function(errorPayload) {
             $log.error('failure loading movie', errorPayload);
@@ -151,28 +152,37 @@
         $scope.domElements.userInfo.phoneNumber = $scope.currentUser.get("username");
         $scope.domElements.userInfo.cardNumber = "************" + $scope.currentUser.get("lastFour");
         $scope.domElements.userInfo.password = $scope.currentUser.get("password");
-        $scope.domElements.userInfo.cvc = "***";
         $scope.domElements.userInfo.date = $scope.currentUser.get("date");
+        if ($scope.currentUser.get("stripeId")) {
+          $scope.domElements.userInfo.cardNumber = "**** **** **** " + $scope.currentUser.get("lastFour");
+          $scope.domElements.userInfo.cvc = "***";
+          $scope.domElements.userInfo.cardMonth = "**";
+          $scope.domElements.userInfo.cardYear = "**";
+        };
       } else {
         console.log("Didn't have a current user");
       }
     }
 
-    var checkIfDefined = function () {
+    var checkIfDefined = function (failedLogin) {
+      //We only actually need
+      if (failedLogin) {
+        var failedLoginString = "Unable to login to user.";
+      };
       if(!$scope.domElements.userInfo || !$scope.domElements.userInfo.phoneNumber) {
-        toaster.pop('warning', "Phone number required");
+        toaster.pop('warning', "Phone number required", failedLoginString);
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.email) {
-        toaster.pop('warning', "email required");
+        toaster.pop('warning', "email required", failedLoginString);
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cardNumber) {
-        toaster.pop('warning', "Card number required");
+        toaster.pop('warning', "Card number required", failedLoginString);
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cvc) {
-        toaster.pop('warning', "cvc required");
+        toaster.pop('warning', "cvc required", failedLoginString);
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.date) {
-        toaster.pop('warning', "exp. date required");
+        toaster.pop('warning', "exp. date required", failedLoginString);
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.password && $scope.domElements.userInfo.stripeId) {
         toaster.pop('warning', "Password required");
@@ -238,31 +248,32 @@
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
-      if(checkIfDefined()) {
-        _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
-        _lastFour = _lastFour.substring(_lastFour.length - 4);
-        var userParms = {
-          'lastFour': _lastFour,
-          'email': $scope.domElements.userInfo.email,
-          'date': $scope.domElements.userInfo.date,
-          'password': $scope.domElements.userInfo.password
-        }
         if($scope.currentUser) {
           $scope.domElements.pageLoading = true;
           if($scope.domElements.userInfo.stripeId)
           {
             _createRequest(_cooking, $scope.currentUser, parseInt($scope.domElements.servings));
           } else {
-            //Create customer and 
+            //We need to add info.
+            if(checkIfDefined()) {
+              _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
+              _lastFour = _lastFour.substring(_lastFour.length - 4);
+              var userParms = {
+                'lastFour': _lastFour,
+                'email': $scope.domElements.userInfo.email,
+                'date': $scope.domElements.userInfo.cardMonth + "/" + $scope.domElements.userInfo.cardYear,
+                'password': $scope.domElements.userInfo.password
+              }
+            }
             $scope.domElements.pageLoading = true;
             var _month;
             var _year;
-            _month = $scope.domElements.userInfo.date.split("/")[0];
+            _month = $scope.domElements.userInfo.cardMonth
             if(_month.length < 2) {
               _month = "0" + _month;
             }
-            _year = $scope.domElements.userInfo.date.split("/")[1];
-
+            _year = $scope.domElements.userInfo.cardYear;
+            
             chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
               .then(function (response) {
                 chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
@@ -292,61 +303,88 @@
               });
           }
         } else {
+          //Find or signup user
           $scope.domElements.pageLoading = true;
-          var _month;
-          var _year;
-          _month = $scope.domElements.userInfo.date.split("/")[0];
-          if(_month.length < 2) {
-            _month = "0" + _month;
-          }
-          _year = $scope.domElements.userInfo.date.split("/")[1];
+          chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.userInfo.password, $scope.domElements.userInfo.email)
+            .then(
+              function(user) { 
+                //We have a user change state.
 
-          chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
-            .then(function (response) {
-              chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
-                .then(
-                  function(stripeResult) { 
-                    //Create a user here
+                if (user.get("stripeId")) {
+                  $scope.currentUser = user;
+                  _checkIfCurrentUser();
+                  _createRequest(_cooking, $scope.currentUser, parseInt($scope.domElements.servings));
+                } else {
+                  //We got a user, but let's see what we should do.
+                  if(checkIfDefined(true)) {
+                    _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
+                    _lastFour = _lastFour.substring(_lastFour.length - 4);
+                    var userParms = {
+                      'lastFour': _lastFour,
+                      'email': $scope.domElements.userInfo.email,
+                      'date': $scope.domElements.userInfo.cardMonth + "/" + $scope.domElements.userInfo.cardYear,
+                      'password': $scope.domElements.userInfo.password
+                    } 
+                    $scope.currentUser = user;
+                    _checkIfCurrentUser();
+                    _createStripeCustomerThenSignup(userParams);
+                  } else {
+                    $scope.logoutUser();
+                    $scope.domElements.pageLoading = true;
+                  }
+                }
+              },
+              function(errorPayload) {
+                console.log(errorPayload);
+                toaster.pop('error', "Something went wrong!", "Unable to sign in to your account");
+                $scope.domElements.pageLoading = false;
+              }
 
-                    //Find or signup....
-                    userParms.stripeId = stripeResult;
-                    chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.userInfo.password, $scope.domElements.userInfo.email)
-                      .then(
-                        function(user) { 
-                          chefFactory.updateUser(userParms)
-                            .then(
-                              function(updateUser) { 
-                                $scope.currentUser = updateUser;
-                                _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
-                                console.log(user + " after findOrSignup in");
-                              },
-                              function(errorPayload) {
-                                console.log(errorPayload);
-                                toaster.pop('error', "Something went wrong!", errorPayload);
-                                $scope.domElements.pageLoading = false;
-                              }
-                            );
+          );
+        }
+      }
+    
+
+    
+    var _createStripeCustomerThenSignup = function (userParams) {    
+
+      $scope.domElements.pageLoading = true;
+      var _month;
+      var _year;
+      _month = $scope.domElements.userInfo.date.split("/")[0];
+      if(_month.length < 2) {
+        _month = "0" + _month;
+      }
+      _year = $scope.domElements.userInfo.date.split("/")[1];
+
       
-                          // chefFactory.updateCooking(_cooking,servings); 
-                        },
-                        function(errorPayload) {
-                          console.log(errorPayload);
-                          toaster.pop('error', "Something went wrong!", "You have already made a request for this meal!");
-                          $scope.domElements.pageLoading = false;
-                        }
-
-                    );
+      chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
+        .then(function (response) {
+        
+          chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
+            .then(
+              function(stripeResult) { 
+                //Create a user here
+              userParms.stripeId = stripeResult;
+              
+              chefFactory.updateUser(userParms)
+                .then(
+                  function(result) { 
+                    //createRequest
+                    _createRequest(_cooking, $scope.currentUser, $scope.domElements.servings);
                   },
                   function(errorPayload) {
                     console.log(errorPayload);
-                    toaster.pop('error', "Something went wrong!", errorPayload);
+                    toaster.pop('error', "Something went wrong!", "We were unable to create a request for you.");
                     $scope.domElements.pageLoading = false;
                   }
-              ); 
-            })
-        }
-      }
+                );
+              
+        });
+        
+      });
     }
+    
 
 
     var _sendMessagesForRequest = function (request) {
