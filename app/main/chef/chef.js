@@ -304,6 +304,7 @@
           }
         } else {
           //Find or signup user
+          $scope.domElements.pageLoading = true;
           chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.userInfo.password, $scope.domElements.userInfo.email)
             .then(
               function(user) { 
@@ -329,6 +330,7 @@
                     _createStripeCustomerThenSignup(userParams);
                   } else {
                     $scope.logoutUser();
+                    $scope.domElements.pageLoading = true;
                   }
                 }
               },
