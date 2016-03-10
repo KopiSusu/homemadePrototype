@@ -15,7 +15,7 @@
 
 		    $routeProvider
 		    	.when('/cooks/:chefId', {
-		        	templateUrl: 'app/main/cooks/chef.html',
+		        	templateUrl: 'app/main/chef/chef.html',
 		        	controller: 'chefCtrl'
 		      	})
 		      	.otherwise({
