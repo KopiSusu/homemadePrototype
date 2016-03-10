@@ -14,12 +14,12 @@
     		// $route.current.templateUrl = '/pages/' + $routeParams.name + ".html";
 
 		    $routeProvider
-		    	.when('/cook/:chefId', {
-		        	templateUrl: 'app/main/cook/chef.html',
+		    	.when('/cooks/:chefId', {
+		        	templateUrl: 'app/main/cooks/chef.html',
 		        	controller: 'chefCtrl'
 		      	})
 		      	.otherwise({
-		        	redirectTo: '/cook'
+		        	redirectTo: '/cooks'
 	     		});
 	     	$locationProvider.html5Mode(true);
 	     }]);
