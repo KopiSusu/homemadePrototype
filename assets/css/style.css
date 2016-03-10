@@ -223,7 +223,7 @@ html, body {
 }
 
 #mainPage #paymentPartial #paymentDetails.Container .loginDetails {
-  padding: 5%;
+  padding: 0% 5% 0% 5%;
 }
 #mainPage #paymentPartial #paymentDetails.Container .loginDetails input {
   font-size: 4vw;
@@ -252,7 +252,12 @@ html, body {
   margin: 0% 3%;
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input#email {
-  width: 40%;
+  font-size: 4vw;
+  border-radius: 10px;
+  border: none;
+  padding: 2% 3%;
+  width: 94%;
+  margin: 0% 3%;
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardNumber {
   margin: 5% 3%;
@@ -264,6 +269,12 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardDate {
   margin: 0 3%;
 }
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardMonth {
+  margin: 0 0 0 3%;
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardYear {
+  margin: 0 0;
+}
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input#password {
   width: 70%;
 }
@@ -271,6 +282,13 @@ html, body {
   font-size: 4vw;
   text-align: center;
 }
+#mainPage #paymentPartial #paymentDetails.Container .loginContext{
+  font-size: 4vw;
+  text-align: center;
+  margin-left:3%;
+  margin-right:3%;
+}
+
 
 
 #mainPage #FloatingNavBlock.container{

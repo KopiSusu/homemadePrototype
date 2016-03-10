@@ -121,7 +121,9 @@ function chefFactory($http, $rootScope, $q, $log) {
 		phoneNumber = phoneNumber.replace(/\D/g, '');
 		user.set("username", phoneNumber);
 		user.set("password", password);
-		user.set("email", email);
+		if (email) {
+			user.set("email", email);
+		}
 		user.signUp(null, {
 		  success: function(user) {
 		    // Hooray! Let them use the app now.
@@ -138,6 +140,8 @@ function chefFactory($http, $rootScope, $q, $log) {
 	var findOrSignupUser = function (phoneNumber, password, email) {
 		//Try to find a user. If it exists try to login. If it doesn't lets create it.
 		var deferred = $q.defer();
+
+		phoneNumber = phoneNumber.toString();
 
 		var userQuery = new Parse.Query(Parse.User);
 		userQuery.equalTo("username", phoneNumber);
