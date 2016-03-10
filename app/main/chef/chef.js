@@ -149,7 +149,7 @@
         $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
         $scope.domElements.userInfo.email = $scope.currentUser.get("email");
         $scope.domElements.userInfo.phoneNumber = $scope.currentUser.get("username");
-        $scope.domElements.userInfo.cardNumber = "**** **** **** " + $scope.currentUser.get("lastFour");
+        $scope.domElements.userInfo.cardNumber = "************" + $scope.currentUser.get("lastFour");
         $scope.domElements.userInfo.password = $scope.currentUser.get("password");
         $scope.domElements.userInfo.cvc = "***";
         $scope.domElements.userInfo.date = $scope.currentUser.get("date");
@@ -174,7 +174,7 @@
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.date) {
         toaster.pop('warning', "exp. date required");
         return false;
-      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.password) {
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.password && $scope.domElements.userInfo.stripeId) {
         toaster.pop('warning', "Password required");
         return false;
       } 
@@ -262,7 +262,7 @@
               _month = "0" + _month;
             }
             _year = $scope.domElements.userInfo.date.split("/")[1];
-            
+
             chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
               .then(function (response) {
                 chefFactory.createCustomer(response.id, $scope.domElements.userInfo.email)
@@ -348,83 +348,12 @@
       }
     }
 
-    var _submitPaymentUpdateCooking = function (customerId) {
-      chefFactory.updateCooking(_cooking, $scope.domElements.servings) 
-    }
-
 
     var _sendMessagesForRequest = function (request) {
       //Send push and text
       chefFactory.sendPushForRequest(request);
-
-      //No need.
-      // chefFactory.sendTextForRequest(request, _cooking.get("cook"));
-
     }
 
-    var _randomHash = function () {
-      //Actually generate a random hash here to use as password.
-      return "mouse";
-    }
-
-
-    /* testing signup.
-      chefFactory.signupUser("101011", "mouse")
-        .then(
-          function(user) { 
-            //Also send a push here!
-            console.log(user);
-            // chefFactory.updateCooking(_cooking,servings); 
-          },
-          function(errorPayload) {
-            toaster.pop('error', "Something went wrong!", errorPayload);
-          }
-      ); 
-    */  
-
-    /* testing login.
-      chefFactory.loginUser("101011", "mouse")
-        .then(
-          function(user) { 
-            //Also send a push here!
-            console.log(user);
-            // chefFactory.updateCooking(_cooking,servings); 
-          },
-          function(errorPayload) {
-            toaster.pop('error', "Something went wrong!", errorPayload);
-          }
-      ); 
-    */  
-
-     // Accessing the current user in the Parse Object
-
-    /*Testing create customer with a fake token.
-    chefFactory.createCustomer("cus_MikeToken", "mike@grazer.co")
-        .then(
-          function(result) { 
-            //Also send a push here!
-            console.log(result);
-            // chefFactory.updateCooking(_cooking,servings); 
-          },
-          function(errorPayload) {
-            toaster.pop('error', "Something went wrong!", errorPayload);
-          }
-      ); 
-    */
-
-    /*Example of using updateUser, can pass as many params as you need.
-    chefFactory.updateUser({email: "Updated.email@m.com", displayName: "Michael J Dee"})
-        .then(
-          function(result) { 
-            //Also send a push here!
-            console.log(result);
-            // chefFactory.updateCooking(_cooking,servings); 
-          },
-          function(errorPayload) {
-            toaster.pop('error', "Something went wrong!", errorPayload);
-          }
-      );
-    */
 
     _checkIfCurrentUser();
     _getChefCooking(chefId);
