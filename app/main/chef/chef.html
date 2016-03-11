@@ -101,22 +101,30 @@
 			<p>TOTAL DISCOUNTS</p><p class="priceSums"> ${{domElements.discounts}} </p><br>
 			<div class="shortLine"><h1>TOTAL: ${{domElements.total}}</h1></div><br>
 		</div>
-		<p class="loginContext" ng-show="!currentUser">If you already have an account with payment info, enter phone number and password only. </p>
+		<!-- Two buttons to show the different logout information. -->
+		<div class="loginSignupToggle">
+			<div class="signupButton" ng-click="signupSelected()">Signup</div>
+			<div class="loginButton" ng-click="loginSelected()">Login</div>
+		</div>
 		<p class="loginContext" ng-show="currentUser">We have the following payment info on record for you.</p>
 		<div class="loginDetails" ng-show="!currentUser">
 			<input id="username" placeholder="Phone number" ng-model="domElements.userInfo.phoneNumber" type="string" step="any" min="0">
 			<input id="password" placeholder="Password" ng-model="domElements.userInfo.password" type="password">
 		</div>
- 			<div class="cardDetails" ng-class="{removePadding: currentUser}">
-	 			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}" ng-show="!currentUser">
-				<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" ng-class="{removeMargin: currentUser}">
-				<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
-				<input id="cardMonth" ng-model="domElements.userInfo.cardMonth" placeholder="mm">
-				/
-				<input id="cardYear" ng-model="domElements.userInfo.cardYear" placeholder="yy">
+		<div class="cardDetails" ng-class="{removePadding: currentUser}">
+ 			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}" ng-show="!currentUser">
+			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" ng-class="{removeMargin: currentUser}">
+			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
+			<input id="cardMonth" ng-model="domElements.userInfo.cardMonth" placeholder="mm">
+			/
+			<input id="cardYear" ng-model="domElements.userInfo.cardYear" placeholder="yy"><br>
+			<!-- Powered by stripe img -->
+			<div class="StripeImgBlock">
+				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
 			</div>
+		</div>
 		<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
-			<p class="bottomText">(We will send you the cooks pickup location!)</p>
+			<p class="bottomText">(We will text you the cooks pickup location!)</p>
 		<div class="timeSelect submit" ng-click="logoutUser()" ng-show="currentUser">Log Out</div>
 	</section>
 </section>

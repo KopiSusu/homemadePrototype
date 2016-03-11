@@ -1,6 +1,6 @@
 (function () {
   angular
-    .module('HomeMade')
+    .module('Homemade')
   	.directive('mainPartial', mainPartial);
 
   function mainPartial () {

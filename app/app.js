@@ -1,13 +1,13 @@
 (function () {
 	angular
-    	.module('HomeMade', [
+    	.module('Homemade', [
     		'ngAnimate', 
     		'ui.bootstrap', 
     		'ngRoute',
     		'toaster',
     		'ngTouch',
     		'ngCookies', 
-    		'HomeMade.chefFactory', 
+    		'Homemade.chefFactory', 
     	])
     	.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     		// This is how to change url and create custom routes. Super easy! add this anywhere in the app

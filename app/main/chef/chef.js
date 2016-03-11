@@ -1,6 +1,6 @@
 (function () {
   angular
-    .module('HomeMade')
+    .module('Homemade')
     .controller('chefCtrl', chefCtrl)
 
 	function chefCtrl ($scope, $log, $rootScope, $routeParams, $cookies, $location, toaster, chefFactory) {
@@ -59,9 +59,11 @@
             chefFactory.updateCooking(_cooking,servings); 
 
             $scope.domElements.pageLoading = false;
-
             //Change the UI to show the eater that they have successfully 
-            toaster.pop('success', "Your order has been delivered to the chef", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
+            toaster.pop('success', "Your order has been sent to the cook", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
+            //Let's set the servings back to 1 and calculate the cost.
+            $scope.domElements.servings = 1;
+            calculateFoodCost();
 
           },
           function(errorPayload) {
@@ -153,7 +155,7 @@
         $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
         $scope.domElements.userInfo.email = $scope.currentUser.get("email");
         $scope.domElements.userInfo.phoneNumber = $scope.currentUser.get("username");
-        $scope.domElements.userInfo.cardNumber = "************" + $scope.currentUser.get("lastFour");
+        $scope.domElements.userInfo.cardNumber = $scope.currentUser.get("lastFour") ? "**** **** **** " + $scope.currentUser.get("lastFour") : "";
         $scope.domElements.userInfo.password = $scope.currentUser.get("password");
         $scope.domElements.userInfo.date = $scope.currentUser.get("date");
         if ($scope.currentUser.get("stripeId")) {
@@ -184,7 +186,7 @@
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cvc) {
         toaster.pop('warning', "cvc required", failedLoginString);
         return false;
-      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.date) {
+      } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cardMonth || !$scope.domElements.userInfo.cardYear) {
         toaster.pop('warning', "exp. date required", failedLoginString);
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.password && $scope.domElements.userInfo.stripeId) {
@@ -306,7 +308,11 @@
               });
           }
         } else {
-          //Find or signup user
+          //Find or signup user if we have phone number, password, email.
+          if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.phoneNumber || !$scope.domElements.userInfo.password) {
+            toaster.pop('error', "Something went wrong!", "Make sure to enter phone number and password.");
+            return;
+          };
           $scope.domElements.pageLoading = true;
           chefFactory.findOrSignupUser($scope.domElements.userInfo.phoneNumber, $scope.domElements.userInfo.password, $scope.domElements.userInfo.email)
             .then(
@@ -333,7 +339,7 @@
                     _createStripeCustomerThenSignup(userParams);
                   } else {
                     $scope.logoutUser();
-                    $scope.domElements.pageLoading = true;
+                    $scope.domElements.pageLoading = false;
                   }
                 }
               },

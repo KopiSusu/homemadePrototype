@@ -1,5 +1,5 @@
 angular
-    .module('HomeMade.chefFactory', [])
+    .module('Homemade.chefFactory', [])
     .factory('chefFactory', chefFactory);
 
 function chefFactory($http, $rootScope, $q, $log) {
