@@ -130,28 +130,52 @@ html, body {
 
 .loginSignupToggle {
   width: 100%;
+  display: inline-block;
 }
 
 .loginButton {
   display: inline;
-  width: 40%;
-  margin: 3%;
+  width: 30%;
+  margin-right: 19%;
+  font-weight: 300;
+  text-align: center;
+  font-size: 4vw;
+  background: #FFFFFF;
+  color: #85C597;
+  border: 2px solid rgba(255,255,255, 0.1);
+}
+.loginButtonSelected {
+  display: inline;
+  width: 30%;
+  margin-right: 19%;
   font-weight: 300;
   text-align: center;
   font-size: 4vw;
   background: #85C597;
-  color: #f0f0f0;
+  color: #FFFFFF;
   border: 2px solid rgba(133,197,151, 0.1);
 }
+
 .signupButton {
   display: inline;
-  width: 40%;
-  margin: 3%;
+  width: 30%;
+  margin-left: 19%;
+  font-weight: 300;
+  text-align: center;
+  font-size: 4vw;
+  background: #FFFFFF;
+  color: #85C597;
+  border: 2px solid rgba(255,255,255, 0.1);
+}
+.signupButtonSelected {
+  display: inline;
+  width: 30%;
+  margin-left: 19%;
   font-weight: 300;
   text-align: center;
   font-size: 4vw;
   background: #85C597;
-  color: #f0f0f0;
+  color: #FFFFFF;
   border: 2px solid rgba(133,197,151, 0.1);
 }
 

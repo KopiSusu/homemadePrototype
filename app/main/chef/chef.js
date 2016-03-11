@@ -32,6 +32,8 @@
     $scope.domElements.loginInfo.password = "";
     $scope.domElements.loginInfo.username = "";
     $scope.domElements.pageLoading = false;
+    $scope.loginActive = false;
+    $scope.signupActive = true;
 
     //////////////////////////
     //// Private functions ///
@@ -151,6 +153,8 @@
 
       if($scope.currentUser) {
         console.log("Had a current user");
+        $scope.loginActive = false;
+        $scope.signupActive = false;
         $scope.domElements.userInfo = {};
         $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
         $scope.domElements.userInfo.email = $scope.currentUser.get("email");
@@ -245,9 +249,23 @@
     $scope.logoutUser = function () {
       chefFactory.logoutUser();
 
+      $scope.loginActive = false;
+      $scope.signupActive = true;
       $scope.domElements.userInfo = {};
 
       delete $scope.currentUser;
+    }
+    $scope.loginSelected = function () {
+      $scope.loginActive = true;
+      $scope.signupActive = false;
+      //Also hide some stuff
+
+    }
+    $scope.signupSelected = function () {
+      $scope.loginActive = false;
+      $scope.signupActive = true;
+      //Also hide some stuff
+
     }
 
     // submit credit card information

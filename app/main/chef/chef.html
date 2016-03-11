@@ -102,24 +102,27 @@
 			<div class="shortLine"><h1>TOTAL: ${{domElements.total}}</h1></div><br>
 		</div>
 		<!-- Two buttons to show the different logout information. -->
-		<div class="loginSignupToggle">
-			<div class="signupButton" ng-click="signupSelected()">Signup</div>
-			<div class="loginButton" ng-click="loginSelected()">Login</div>
+		<div class="loginSignupToggle" ng-show="!currentUser">
+			<input type="submit" value="Signup" ng-class="{true: 'signupButtonSelected', false: 'signupButton'}[signupActive]" ng-click="signupSelected()">			
+			<input type="submit" value="Login" ng-class="{true: 'loginButtonSelected', false: 'loginButton'}[loginActive]" ng-click="loginSelected()">
 		</div>
-		<p class="loginContext" ng-show="currentUser">We have the following payment info on record for you.</p>
+		<p class="loginContext" ng-show="currentUser">We have a card on record for you.</p>
 		<div class="loginDetails" ng-show="!currentUser">
 			<input id="username" placeholder="Phone number" ng-model="domElements.userInfo.phoneNumber" type="string" step="any" min="0">
 			<input id="password" placeholder="Password" ng-model="domElements.userInfo.password" type="password">
 		</div>
 		<div class="cardDetails" ng-class="{removePadding: currentUser}">
- 			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}" ng-show="!currentUser">
-			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" ng-class="{removeMargin: currentUser}">
-			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
-			<input id="cardMonth" ng-model="domElements.userInfo.cardMonth" placeholder="mm">
-			/
-			<input id="cardYear" ng-model="domElements.userInfo.cardYear" placeholder="yy"><br>
+ 			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}" ng-show="!currentUser && signupActive">
+			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" ng-class="{removeMargin: currentUser}" ng-show="signupActive">
+			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}" ng-show="signupActive"><br>
+
+			<div ng-show="signupActive">
+				<input id="cardMonth" ng-model="domElements.userInfo.cardMonth" placeholder="mm" ng-show="signupActive">
+				/
+				<input id="cardYear" ng-model="domElements.userInfo.cardYear" placeholder="yy" ng-show="signupActive"><br>
+			</div>
 			<!-- Powered by stripe img -->
-			<div class="StripeImgBlock">
+			<div class="StripeImgBlock" ng-show="signupActive">
 				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
 			</div>
 		</div>
