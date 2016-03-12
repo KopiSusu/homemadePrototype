@@ -32,8 +32,7 @@
     $scope.domElements.loginInfo.password = "";
     $scope.domElements.loginInfo.username = "";
     $scope.domElements.pageLoading = false;
-    $scope.loginActive = false;
-    $scope.signupActive = true;
+    $scope.selectedButton = false;
 
     //////////////////////////
     //// Private functions ///
@@ -264,19 +263,11 @@
 
       delete $scope.currentUser;
     }
-    $scope.loginSelected = function () {
-      $scope.loginActive = true;
-      $scope.signupActive = false;
-      //Also hide some stuff
 
+    $scope.selectLoginSignup = function () {
+      $scope.selectedButton = !$scope.selectedButton;
     }
-    $scope.signupSelected = function () {
-      $scope.loginActive = false;
-      $scope.signupActive = true;
-      //Also hide some stuff
-
-    }
-
+    
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
