@@ -292,7 +292,7 @@ html, body {
   padding: 0% 5% 5% 5%;
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails.removePadding {
-  padding-top: 0%;
+  padding: 0% 5% 0% 5%;
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input {
   font-size: 4vw;
@@ -348,10 +348,12 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .loginContext{
   font-size: 4vw;
   text-align: center;
-  margin-left:3%;
-  margin-right:3%;
+  margin-left: 3%;
+  margin-right: 3%;
 }
-
+#mainPage #paymentPartial #paymentDetails.Container .loginContext.bolderText {
+  font-weight: 500;
+}
 
 
 #mainPage #FloatingNavBlock.container{

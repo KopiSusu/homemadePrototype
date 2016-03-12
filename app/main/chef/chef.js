@@ -65,7 +65,7 @@
             toaster.pop('success', "Your order has been sent to the cook", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
             //Let's set the servings back to 1 and calculate the cost.
             $scope.domElements.servings = 1;
-            calculateFoodCost();
+            _calculateFoodCost();
 
           },
           function(errorPayload) {
@@ -141,7 +141,7 @@
     var _calculateTotal = function () {
       $scope.domElements.total = parseFloat($scope.domElements.tax) + parseFloat($scope.domElements.totalFoodCost) + parseFloat($scope.domElements.discounts); 
     }
-    $scope.calculateFoodCost = function () {
+    var _calculateFoodCost = function () {
       $scope.domElements.totalFoodCost = $scope.domElements.mealPrice * $scope.domElements.servings;
       _calculateTax();
       _calculateTotal();
