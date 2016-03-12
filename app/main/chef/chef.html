@@ -122,12 +122,14 @@
 				<input id="cardYear" ng-model="domElements.userInfo.cardYear" placeholder="yy"><br>
 			</div>
 		</div>
-		<!-- Powered by stripe img -->
-		<div class="StripeImgBlock">
-			<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
+		<div class="bottomBlock" ng-class="{shiftUp: selectedButton}">
+			<!-- Powered by stripe img -->
+			<div class="StripeImgBlock">
+				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
+			</div>
+			<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
+				<p class="bottomText">(We will text you the cooks pickup location!)</p>
+			<div class="timeSelect submit" ng-click="logoutUser()" ng-show="currentUser">Log Out</div>
 		</div>
-		<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
-			<p class="bottomText">(We will text you the cooks pickup location!)</p>
-		<div class="timeSelect submit" ng-click="logoutUser()" ng-show="currentUser">Log Out</div>
 	</section>
 </section>

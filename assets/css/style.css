@@ -267,19 +267,15 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .loginDetails input#password {
   margin: 3% 3% 3% 3%;
 }
-
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails {
   padding: 0% 5% 5% 5%;
-  max-height: 100%;
-  overflow: hidden;
   transition: all 0.55s cubic-bezier(0.2, 0, 0.2, 1);
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails.ng-hide {
-  max-height: 0%;
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(-100%, 0, 0);
+  -moz-transform: translate3d(-100%, 0, 0);
+  -ms-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails.removePadding {
   padding: 0% 5% 0% 5%;
