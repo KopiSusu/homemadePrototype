@@ -18,6 +18,7 @@
 
     // Store Cooking Object, Private
     var _cooking = {};
+    var _userParms = {};
     var _lastFour;
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -60,6 +61,7 @@
             chefFactory.updateCooking(_cooking,servings); 
 
             $scope.domElements.pageLoading = false;
+            $scope.selectedButton = false;
             //Change the UI to show the eater that they have successfully 
             toaster.pop('success', "Your order has been sent to the cook", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
             //Let's set the servings back to 1 and calculate the cost.
@@ -278,14 +280,13 @@
             if(checkIfDefined()) {
               _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
               _lastFour = _lastFour.substring(_lastFour.length - 4);
-              var userParms = {
+              _userParms = {
                 'lastFour': _lastFour,
                 'email': $scope.domElements.userInfo.email,
                 'date': $scope.domElements.userInfo.cardMonth + "/" + $scope.domElements.userInfo.cardYear,
                 'password': $scope.domElements.userInfo.password
               }
             }
-            $scope.domElements.pageLoading = true;
             var _month;
             var _year;
             _month = $scope.domElements.userInfo.cardMonth
@@ -300,8 +301,8 @@
                   .then(
                     function(stripeResult) { 
                       //Update user
-                      userParms.stripeId = stripeResult;
-                      chefFactory.updateUser(userParms)
+                      _userParms.stripeId = stripeResult;
+                      chefFactory.updateUser(_userParms)
                       .then(
                         function(result) { 
                           //createRequest
@@ -343,15 +344,15 @@
                   if(checkIfDefined(true)) {
                     _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
                     _lastFour = _lastFour.substring(_lastFour.length - 4);
-                    var userParms = {
+                    __userParms = {
                       'lastFour': _lastFour,
                       'email': $scope.domElements.userInfo.email,
                       'date': $scope.domElements.userInfo.cardMonth + "/" + $scope.domElements.userInfo.cardYear,
                       'password': $scope.domElements.userInfo.password
                     } 
                     $scope.currentUser = user;
-                    _checkIfCurrentUser();
-                    _createStripeCustomerThenSignup(userParams);
+                    _createStripeCustomerThenSignup();
+                    // _checkIfCurrentUser();
                   } else {
                     $scope.logoutUser();
                     $scope.domElements.pageLoading = false;
@@ -370,16 +371,16 @@
     
 
     
-    var _createStripeCustomerThenSignup = function (userParams) {    
+    var _createStripeCustomerThenSignup = function () {    
 
       $scope.domElements.pageLoading = true;
       var _month;
       var _year;
-      _month = $scope.domElements.userInfo.date.split("/")[0];
+      _month = $scope.domElements.userInfo.cardMonth ;
       if(_month.length < 2) {
         _month = "0" + _month;
       }
-      _year = $scope.domElements.userInfo.date.split("/")[1];
+      _year = $scope.domElements.userInfo.cardYear;
 
       
       chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
@@ -389,9 +390,9 @@
             .then(
               function(stripeResult) { 
                 //Create a user here
-              userParms.stripeId = stripeResult;
+              _userParms.stripeId = stripeResult;
               
-              chefFactory.updateUser(userParms)
+              chefFactory.updateUser(_userParms)
                 .then(
                   function(result) { 
                     //createRequest

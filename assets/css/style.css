@@ -135,10 +135,10 @@ html, body {
 }
 
 .loginSignupToggle {
-    width: 70%;
-    display: inline-block;
-    padding: 0% 15%;
-    position: relative;
+  width: 70%;
+  display: inline-block;
+  padding: 0% 15%;
+  position: relative;
 }
 .loginSignupButton {
   display: inline-block;
