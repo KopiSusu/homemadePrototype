@@ -200,6 +200,16 @@
       return true;
     }
 
+    ////////////////////////////////////////////
+    //// Stuff to keep a keen eye on, arrrrr ///
+    ////////////////////////////////////////////
+
+    $scope.$watch(
+      "domElements.servings",
+      function handleFooChange( newValue, oldValue ) {
+        _calculateFoodCost();
+      }
+    );
 
     /////////////////////////
     //// Public functions ///
@@ -210,7 +220,6 @@
     $scope.selectTimePeriod = function (time) {
       $scope.domElements.timeSelected = time;
     }
-
 
     $scope.submitOrder = function () {
       var _selectedPeriod = $scope.domElements.timeSelected;
