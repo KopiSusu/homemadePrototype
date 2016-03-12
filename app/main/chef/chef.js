@@ -152,8 +152,6 @@
 
       if($scope.currentUser) {
         console.log("Had a current user");
-        $scope.loginActive = false;
-        $scope.signupActive = false;
         $scope.domElements.userInfo = {};
         $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
         $scope.domElements.userInfo.email = $scope.currentUser.get("email");
@@ -257,8 +255,7 @@
     $scope.logoutUser = function () {
       chefFactory.logoutUser();
 
-      $scope.loginActive = false;
-      $scope.signupActive = true;
+      $scope.selectedButton = false;
       $scope.domElements.userInfo = {};
 
       delete $scope.currentUser;
