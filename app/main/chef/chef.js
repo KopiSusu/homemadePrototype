@@ -91,6 +91,7 @@
     // This function is run on page load.
     var _getChefCooking = function (id) {
       $scope.domElements.pageLoading = true;
+      var _emptyChef = id;
       chefFactory.getCooking(id)
         .then(
           function(cooking) { 
@@ -115,6 +116,7 @@
           },
           function(errorPayload) {
             $scope.isEmpty = true;
+            $scope.emptyChef = _emptyChef;
             $scope.domElements.pageLoading = false;
             $log.error('failure loading movie', errorPayload);
 
