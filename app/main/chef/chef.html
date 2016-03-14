@@ -16,7 +16,7 @@
 
 <section id="emptyPartial" ng-show="isEmpty">
 	<!-- Add html for empty partial here -->
-	<h1>Hello there was no data here!!</h1>
+	<h1 style="text-align: center;">Hello there was no data here!!</h1>
 </section>
 
 <section id="ChefPartial" ng-show="!paymentOpen && !isEmpty">
@@ -112,7 +112,7 @@
 			<input id="username" placeholder="Phone number" ng-model="domElements.userInfo.phoneNumber" type="string" step="any" min="0">
 			<input id="password" placeholder="Password" ng-model="domElements.userInfo.password" type="password">
 		</div>
-		<div class="cardDetails" ng-class="{removePadding: !currentUser}" ng-show="selectedButton">
+		<div class="cardDetails" ng-class="{removePadding: currentUser}" ng-show="selectedButton">
  			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}" ng-show="!currentUser">
 			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" ng-class="{removeMargin: currentUser}">
 			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
@@ -125,7 +125,7 @@
 		</div>
 		<div class="bottomBlock" ng-class="{shiftUp: !selectedButton}">
 			<!-- Powered by stripe img -->
-			<div class="StripeImgBlock">
+			<div class="StripeImgBlock" ng-show="!	currentUser">
 				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
 			</div>
 			<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>

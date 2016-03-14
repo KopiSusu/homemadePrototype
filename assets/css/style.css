@@ -184,6 +184,21 @@ html, body {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
+.logoutButton {
+  display: block;
+  width: 45%;
+  margin: 45% 27.5% 4%;
+  font-weight: 300;
+  text-align: center;
+  font-size: 4vw;
+  background: #85C597;
+  color: #f0f0f0;
+  border: 2px solid rgba(133,197,151, 0.1);
+  height: 7vw;
+  line-height: 7vw;
+  cursor: pointer;
+}
+
 #mainPage #ChefPartial .Container .titleBlock {
   position: relative;
   margin-top: 0%;
@@ -305,7 +320,8 @@ html, body {
   transform: translate3d(-100%, 0, 0);
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails.removePadding {
-  padding: 0% 5% 0% 5%;
+  padding: 0%;
+  display: none;
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input {
   font-size: 4vw;
