@@ -124,18 +124,12 @@
 		</div>
 		<div class="bottomBlock" ng-class="{shiftUp: !selectedButton}">
 			<!-- Powered by stripe img -->
-			<div class="StripeImgBlock">
+			<div class="StripeImgBlock" ng-show="!	currentUser">
 				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
 			</div>
 			<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
 				<p class="bottomText">(We will text you the cooks pickup location!)</p>
 			<div class="timeSelect submit" ng-click="logoutUser()" ng-show="currentUser">Log Out</div>
 		</div>
-<<<<<<< HEAD
-		<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
-			<p class="bottomText">(We will text you the cooks pickup location!)</p>
-		<div class="logoutButton" ng-click="logoutUser()" ng-show="currentUser">Log Out</div>
-=======
->>>>>>> 0246bc7e9a1de38313a15b31978a29e0ef33685d
 	</section>
 </section>

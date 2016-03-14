@@ -295,12 +295,8 @@ html, body {
   transform: translate3d(-100%, 0, 0);
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails.removePadding {
-<<<<<<< HEAD
   padding: 0%;
   display: none;
-=======
-  padding: 0% 5% 0% 5%;
->>>>>>> 0246bc7e9a1de38313a15b31978a29e0ef33685d
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input {
   font-size: 4vw;
