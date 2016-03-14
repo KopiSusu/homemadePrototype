@@ -12,13 +12,14 @@
 		<i class="material-icons" ng-click="backToCooking()">assignment_return</i>
 	</div>
 	<br>
-<!-- 	<div class="right navButton" ng-show="paymentOpen && currentUser">
-		<i class="material-icons" ng-click="logoutUser()">exit_to_app</i>
-	</div> -->
-
 </section>
 
-<section id="ChefPartial" ng-show="!paymentOpen">
+<section id="emptyPartial" ng-show="isEmpty">
+	<!-- Add html for empty partial here -->
+	<h1>Hello there was no data here!!</h1>
+</section>
+
+<section id="ChefPartial" ng-show="!paymentOpen && !isEmpty">
 
 	<section id="MealDescriptionBlock" class="Container">
 
@@ -75,7 +76,7 @@
 
 </section>
 
-<section id="paymentPartial" ng-show="paymentOpen" ng-swipe-left="backToCooking()">
+<section id="paymentPartial" ng-show="paymentOpen && !isEmpty" ng-swipe-left="backToCooking()">
 	<section id="orderSummary" class="Container">
 		<div class="TitleBlock">
 			<img ng-src="{{domElements.imgSrc}}" alt="Image" class="cookImg"></img>

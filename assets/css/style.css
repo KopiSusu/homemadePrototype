@@ -31,6 +31,30 @@ html, body {
   border-collapse: collapse;
 }
 
+/*----------EMTPY---------*/
+#mainPage #emptyPartial {
+  position: absolute;
+  background: #f0f0f0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow-y: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;
+  background: #f0f0f0;
+  border-right: 1px solid #e3e3e3;
+  height: 100%;
+  z-index: 100;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#mainPage #emptyPartial.ng-hide {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  -moz-transform: translate3d(-100%, 0, 0);
+  -ms-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+}
+
+
+
 /*----------CHEF---------*/
 #mainPage #ChefPartial {
   position: absolute;
@@ -172,6 +196,7 @@ html, body {
   border-radius: 50%;
 }
 
+/*----------PAYMENT---------*/
 #mainPage #paymentPartial {
   position: absolute;
   background: #f0f0f0;

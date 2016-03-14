@@ -34,6 +34,7 @@
     $scope.domElements.loginInfo.username = "";
     $scope.domElements.pageLoading = false;
     $scope.selectedButton = false;
+    $scope.isEmpty = false;
 
     //////////////////////////
     //// Private functions ///
@@ -83,6 +84,7 @@
         .then(
           function(cooking) { 
             $scope.domElements.pageLoading = false;
+            $scope.isEmpty = false;
             _cooking = cooking;
             $scope.domElements.meal = cooking.get("meal").get("name");
             $scope.domElements.imgSrc = cooking.get("meal").get("imageURLS")[0];
@@ -101,8 +103,10 @@
             console.log(cooking.get("start") + " is the cooking start.");
           },
           function(errorPayload) {
-            $log.error('failure loading movie', errorPayload);
+            $scope.isEmpty = true;
             $scope.domElements.pageLoading = false;
+            $log.error('failure loading movie', errorPayload);
+
           }
         );   
     }
