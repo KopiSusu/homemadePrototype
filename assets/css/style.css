@@ -27,6 +27,7 @@ html, body {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,1);
+  overflow-y: hidden; 
   border-collapse: collapse;
 }
 
@@ -39,7 +40,8 @@ html, body {
   width: 100%;
   right: 0;
   opacity: 1;
-  overflow: auto;
+  overflow-y: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;
   text-align: center;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -110,11 +112,14 @@ html, body {
   line-height: 7vw;
   margin: 0% 2%;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  transition: all 0.15s cubic-bezier(0.2, 0, 0.2, 1);
 }
 .timeSelect.selected {
   color: #f0f0f0;
   background: rgba(0,0,0,.8);
   border: 2px solid rgba(0,0,0,0.1);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 } 
 .timeSelect.submit {
   display: block;
@@ -126,57 +131,33 @@ html, body {
   background: #85C597;
   color: #f0f0f0;
   border: 2px solid rgba(133,197,151, 0.1);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 .loginSignupToggle {
-  width: 100%;
+  width: 70%;
   display: inline-block;
+  padding: 0% 15%;
+  position: relative;
 }
-
-.loginButton {
-  display: inline;
-  width: 30%;
-  margin-right: 19%;
+.loginSignupButton {
+  display: inline-block;
+  width: 41%;
+  margin: 0% 3%;
   font-weight: 300;
   text-align: center;
   font-size: 4vw;
   background: #FFFFFF;
   color: #85C597;
   border: 2px solid rgba(255,255,255, 0.1);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  transition: all 0.15s cubic-bezier(0.2, 0, 0.2, 1);
 }
-.loginButtonSelected {
-  display: inline;
-  width: 30%;
-  margin-right: 19%;
-  font-weight: 300;
-  text-align: center;
-  font-size: 4vw;
+.loginSignupButton.selected {
   background: #85C597;
   color: #FFFFFF;
   border: 2px solid rgba(133,197,151, 0.1);
-}
-
-.signupButton {
-  display: inline;
-  width: 30%;
-  margin-left: 19%;
-  font-weight: 300;
-  text-align: center;
-  font-size: 4vw;
-  background: #FFFFFF;
-  color: #85C597;
-  border: 2px solid rgba(255,255,255, 0.1);
-}
-.signupButtonSelected {
-  display: inline;
-  width: 30%;
-  margin-left: 19%;
-  font-weight: 300;
-  text-align: center;
-  font-size: 4vw;
-  background: #85C597;
-  color: #FFFFFF;
-  border: 2px solid rgba(133,197,151, 0.1);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 .logoutButton {
@@ -212,7 +193,8 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  overflow: auto;
+  overflow-y: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;
   background: #f0f0f0;
   border-right: 1px solid #e3e3e3;
   height: 100%;
@@ -302,13 +284,23 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .loginDetails input#password {
   margin: 3% 3% 3% 3%;
 }
-
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails {
   padding: 0% 5% 5% 5%;
+  transition: all 0.55s cubic-bezier(0.2, 0, 0.2, 1);
+}
+#mainPage #paymentPartial #paymentDetails.Container .cardDetails.ng-hide {
+  -webkit-transform: translate3d(-100%, 0, 0);
+  -moz-transform: translate3d(-100%, 0, 0);
+  -ms-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails.removePadding {
+<<<<<<< HEAD
   padding: 0%;
   display: none;
+=======
+  padding: 0% 5% 0% 5%;
+>>>>>>> 0246bc7e9a1de38313a15b31978a29e0ef33685d
 }
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input {
   font-size: 4vw;
@@ -348,15 +340,12 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .cardDetails input#cardYear {
   margin: 0 0;
 }
-#mainPage #paymentPartial #paymentDetails.Container .cardDetails .StripeImgBlock img {
+#mainPage #paymentPartial #paymentDetails.Container .StripeImgBlock img {
   display: block;
   margin-left: auto;
   margin-right: auto;
   margin-top: 4%;
 }
-/*#mainPage #paymentPartial #paymentDetails.Container .cardDetails input#password {
-  width: 70%;
-}*/
 #mainPage #paymentPartial #paymentDetails.Container .bottomText{
   font-size: 4vw;
   text-align: center;
@@ -364,10 +353,12 @@ html, body {
 #mainPage #paymentPartial #paymentDetails.Container .loginContext{
   font-size: 4vw;
   text-align: center;
-  margin-left:3%;
-  margin-right:3%;
+  margin-left: 3%;
+  margin-right: 3%;
 }
-
+#mainPage #paymentPartial #paymentDetails.Container .loginContext.bolderText {
+  font-weight: 500;
+}
 
 
 #mainPage #FloatingNavBlock.container{
@@ -403,7 +394,8 @@ html, body {
 /*​------------- Scrollbar ---------------*/
 ::-webkit-scrollbar {
     -webkit-appearance: none;
-}
+    display: none; 
+  }
 
 ::-webkit-scrollbar:vertical {
     width: 7px;

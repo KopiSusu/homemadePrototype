@@ -18,6 +18,7 @@
 
     // Store Cooking Object, Private
     var _cooking = {};
+    var _userParms = {};
     var _lastFour;
     var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -32,8 +33,7 @@
     $scope.domElements.loginInfo.password = "";
     $scope.domElements.loginInfo.username = "";
     $scope.domElements.pageLoading = false;
-    $scope.loginActive = false;
-    $scope.signupActive = true;
+    $scope.selectedButton = false;
 
     //////////////////////////
     //// Private functions ///
@@ -61,11 +61,12 @@
             chefFactory.updateCooking(_cooking,servings); 
 
             $scope.domElements.pageLoading = false;
+            $scope.selectedButton = false;
             //Change the UI to show the eater that they have successfully 
             toaster.pop('success', "Your order has been sent to the cook", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
             //Let's set the servings back to 1 and calculate the cost.
             $scope.domElements.servings = 1;
-            calculateFoodCost();
+            _calculateFoodCost();
 
           },
           function(errorPayload) {
@@ -141,7 +142,7 @@
     var _calculateTotal = function () {
       $scope.domElements.total = parseFloat($scope.domElements.tax) + parseFloat($scope.domElements.totalFoodCost) + parseFloat($scope.domElements.discounts); 
     }
-    $scope.calculateFoodCost = function () {
+    var _calculateFoodCost = function () {
       $scope.domElements.totalFoodCost = $scope.domElements.mealPrice * $scope.domElements.servings;
       _calculateTax();
       _calculateTotal();
@@ -153,8 +154,6 @@
 
       if($scope.currentUser) {
         console.log("Had a current user");
-        $scope.loginActive = false;
-        $scope.signupActive = false;
         $scope.domElements.userInfo = {};
         $scope.domElements.userInfo.stripeId = $scope.currentUser.get("stripeId");
         $scope.domElements.userInfo.email = $scope.currentUser.get("email");
@@ -200,6 +199,16 @@
       return true;
     }
 
+    ////////////////////////////////////////////
+    //// Stuff to keep a keen eye on, arrrrr ///
+    ////////////////////////////////////////////
+
+    $scope.$watch(
+      "domElements.servings",
+      function handleFooChange( newValue, oldValue ) {
+        _calculateFoodCost();
+      }
+    );
 
     /////////////////////////
     //// Public functions ///
@@ -210,7 +219,6 @@
     $scope.selectTimePeriod = function (time) {
       $scope.domElements.timeSelected = time;
     }
-
 
     $scope.submitOrder = function () {
       var _selectedPeriod = $scope.domElements.timeSelected;
@@ -249,25 +257,16 @@
     $scope.logoutUser = function () {
       chefFactory.logoutUser();
 
-      $scope.loginActive = false;
-      $scope.signupActive = true;
+      $scope.selectedButton = false;
       $scope.domElements.userInfo = {};
 
       delete $scope.currentUser;
     }
-    $scope.loginSelected = function () {
-      $scope.loginActive = true;
-      $scope.signupActive = false;
-      //Also hide some stuff
 
+    $scope.selectLoginSignup = function () {
+      $scope.selectedButton = !$scope.selectedButton;
     }
-    $scope.signupSelected = function () {
-      $scope.loginActive = false;
-      $scope.signupActive = true;
-      //Also hide some stuff
-
-    }
-
+    
     // submit credit card information
     // currently creating new payment option, then creating customer, then updating cooking.
     $scope.submitPayment = function () {
@@ -281,14 +280,13 @@
             if(checkIfDefined()) {
               _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
               _lastFour = _lastFour.substring(_lastFour.length - 4);
-              var userParms = {
+              _userParms = {
                 'lastFour': _lastFour,
                 'email': $scope.domElements.userInfo.email,
                 'date': $scope.domElements.userInfo.cardMonth + "/" + $scope.domElements.userInfo.cardYear,
                 'password': $scope.domElements.userInfo.password
               }
             }
-            $scope.domElements.pageLoading = true;
             var _month;
             var _year;
             _month = $scope.domElements.userInfo.cardMonth
@@ -303,8 +301,8 @@
                   .then(
                     function(stripeResult) { 
                       //Update user
-                      userParms.stripeId = stripeResult;
-                      chefFactory.updateUser(userParms)
+                      _userParms.stripeId = stripeResult;
+                      chefFactory.updateUser(_userParms)
                       .then(
                         function(result) { 
                           //createRequest
@@ -346,15 +344,15 @@
                   if(checkIfDefined(true)) {
                     _lastFour = ("" + $scope.domElements.userInfo.cardNumber).replace(/[^0-9]/, '');
                     _lastFour = _lastFour.substring(_lastFour.length - 4);
-                    var userParms = {
+                    __userParms = {
                       'lastFour': _lastFour,
                       'email': $scope.domElements.userInfo.email,
                       'date': $scope.domElements.userInfo.cardMonth + "/" + $scope.domElements.userInfo.cardYear,
                       'password': $scope.domElements.userInfo.password
                     } 
                     $scope.currentUser = user;
-                    _checkIfCurrentUser();
-                    _createStripeCustomerThenSignup(userParams);
+                    _createStripeCustomerThenSignup();
+                    // _checkIfCurrentUser();
                   } else {
                     $scope.logoutUser();
                     $scope.domElements.pageLoading = false;
@@ -373,16 +371,16 @@
     
 
     
-    var _createStripeCustomerThenSignup = function (userParams) {    
+    var _createStripeCustomerThenSignup = function () {    
 
       $scope.domElements.pageLoading = true;
       var _month;
       var _year;
-      _month = $scope.domElements.userInfo.date.split("/")[0];
+      _month = $scope.domElements.userInfo.cardMonth ;
       if(_month.length < 2) {
         _month = "0" + _month;
       }
-      _year = $scope.domElements.userInfo.date.split("/")[1];
+      _year = $scope.domElements.userInfo.cardYear;
 
       
       chefFactory.addPayementOption($scope.domElements.userInfo.cardNumber, $scope.domElements.userInfo.cvc, _month, _year)
@@ -392,9 +390,9 @@
             .then(
               function(stripeResult) { 
                 //Create a user here
-              userParms.stripeId = stripeResult;
+              _userParms.stripeId = stripeResult;
               
-              chefFactory.updateUser(userParms)
+              chefFactory.updateUser(_userParms)
                 .then(
                   function(result) { 
                     //createRequest

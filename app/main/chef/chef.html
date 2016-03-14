@@ -85,7 +85,7 @@
 			<p>{{domElements.day}} {{domElements.availablity}} at</p>
 			<select ng-options="period.displayName for period in domElements.timePeriods" ng-model="domElements.timeSelected" ng-value="domElements.timeSelected.displayname"></select>
 			<br>
-			<p>Number of Servings</p><input class="servings" value="1" ng-model="domElements.servings" ng-change="calculateFoodCost()" type="number" step="any" min="1" max="100"><br>
+			<p>Number of Servings</p><input class="servings" value="1" ng-model="domElements.servings" type="number" step="any" min="1" max="100"><br>
 <!-- 			<p>Promotional Code</p><input><br> -->
 		</div>
 		<span class="horizontalLine">
@@ -103,31 +103,39 @@
 		</div>
 		<!-- Two buttons to show the different logout information. -->
 		<div class="loginSignupToggle" ng-show="!currentUser">
-			<input type="submit" value="Signup" ng-class="{true: 'signupButtonSelected', false: 'signupButton'}[signupActive]" ng-click="signupSelected()">			
-			<input type="submit" value="Login" ng-class="{true: 'loginButtonSelected', false: 'loginButton'}[loginActive]" ng-click="loginSelected()">
+			<div class="loginSignupButton" ng-class="{selected: selectedButton}" ng-click="selectLoginSignup()">Signup</div>		
+			<div class="loginSignupButton" ng-class="{selected: !selectedButton}" ng-click="selectLoginSignup()">Login</div>
 		</div>
-		<p class="loginContext" ng-show="currentUser">We have a card on record for you.</p>
+		<p class="loginContext" ng-show="currentUser" ng-class="{bolderText: selectedButton}">We have a card on record for you.</p>
 		<div class="loginDetails" ng-show="!currentUser">
 			<input id="username" placeholder="Phone number" ng-model="domElements.userInfo.phoneNumber" type="string" step="any" min="0">
 			<input id="password" placeholder="Password" ng-model="domElements.userInfo.password" type="password">
 		</div>
-		<div class="cardDetails" ng-class="{removePadding: currentUser}">
- 			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}" ng-show="!currentUser && signupActive">
-			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" ng-class="{removeMargin: currentUser}" ng-show="signupActive">
-			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}" ng-show="signupActive"><br>
+		<div class="cardDetails" ng-class="{removePadding: !currentUser}" ng-show="selectedButton">
+ 			<input id="email" placeholder="Email" ng-model="domElements.userInfo.email" value="{{domElements.userInfo.email}}" ng-show="!currentUser">
+			<input id="cardNumber" placeholder="Card number" ng-model="domElements.userInfo.cardNumber" value="{{domElements.userInfo.cardNumber}}" ng-class="{removeMargin: currentUser}">
+			<input id="cvc" placeholder="cvc" ng-model="domElements.userInfo.cvc" value="{{domElements.userInfo.cvc}}"><br>
 
-			<div ng-show="signupActive">
-				<input id="cardMonth" ng-model="domElements.userInfo.cardMonth" placeholder="mm" ng-show="signupActive">
+			<div>
+				<input id="cardMonth" ng-model="domElements.userInfo.cardMonth" ng-value="domElements.userInfo.cardMonth" placeholder="mm">
 				/
-				<input id="cardYear" ng-model="domElements.userInfo.cardYear" placeholder="yy" ng-show="signupActive"><br>
-			</div>
-			<!-- Powered by stripe img -->
-			<div class="StripeImgBlock" ng-show="signupActive">
-				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
+				<input id="cardYear" ng-model="domElements.userInfo.cardYear" ng-value="domElements.userInfo.cardYear" placeholder="yy"><br>
 			</div>
 		</div>
+		<div class="bottomBlock" ng-class="{shiftUp: !selectedButton}">
+			<!-- Powered by stripe img -->
+			<div class="StripeImgBlock">
+				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
+			</div>
+			<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
+				<p class="bottomText">(We will text you the cooks pickup location!)</p>
+			<div class="timeSelect submit" ng-click="logoutUser()" ng-show="currentUser">Log Out</div>
+		</div>
+<<<<<<< HEAD
 		<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>
 			<p class="bottomText">(We will text you the cooks pickup location!)</p>
 		<div class="logoutButton" ng-click="logoutUser()" ng-show="currentUser">Log Out</div>
+=======
+>>>>>>> 0246bc7e9a1de38313a15b31978a29e0ef33685d
 	</section>
 </section>
