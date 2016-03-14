@@ -125,9 +125,9 @@
 				<input id="cardYear" ng-model="domElements.userInfo.cardYear" ng-value="domElements.userInfo.cardYear" placeholder="yy"><br>
 			</div>
 		</div>
-		<div class="bottomBlock" ng-class="{shiftUp: !selectedButton}">
+		<div class="bottomBlock">
 			<!-- Powered by stripe img -->
-			<div class="StripeImgBlock" ng-show="!	currentUser">
+			<div class="StripeImgBlock" ng-show="!currentUser">
 				<img ng-src="/assets/img/stripeDarkAsset.png" alt="Image"></img>
 			</div>
 			<div class="timeSelect submit" ng-click="submitPayment()">Buy Now</div>

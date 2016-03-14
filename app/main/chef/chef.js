@@ -3,7 +3,7 @@
     .module('Homemade')
     .controller('chefCtrl', chefCtrl)
 
-	function chefCtrl ($scope, $log, $rootScope, $routeParams, $cookies, $location, toaster, chefFactory) {
+	function chefCtrl ($scope, $log, $rootScope, $routeParams, $cookies, $location, $timeout, toaster, chefFactory) {
     // for cookies, check out https://docs.angularjs.org/api/ngCookies/service/$cookies
     // example
     //
