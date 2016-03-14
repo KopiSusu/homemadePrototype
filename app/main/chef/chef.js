@@ -33,7 +33,7 @@
     $scope.domElements.loginInfo.password = "";
     $scope.domElements.loginInfo.username = "";
     $scope.domElements.pageLoading = false;
-    $scope.selectedButton = false;
+    $scope.selectedButton = true;
 
     //////////////////////////
     //// Private functions ///
@@ -61,9 +61,20 @@
             chefFactory.updateCooking(_cooking,servings); 
 
             $scope.domElements.pageLoading = false;
-            $scope.selectedButton = false;
+            $scope.selectedButton = true;
             //Change the UI to show the eater that they have successfully 
-            toaster.pop('success', "Your order has been sent to the cook", $scope.domElements.servings + " Servings of " + $scope.domElements.meal);
+
+
+            var toasterMessage = $scope.domElements.servings == 1 ? $scope.domElements.servings + " Serving of " + $scope.domElements.meal : $scope.domElements.servings + " Servings of " + $scope.domElements.meal;
+            toasterMessage = toasterMessage + ". Once the cook confirms your card will be charged and the address will be texted to you."
+            toaster.pop({
+                type: 'success',
+                title: "Your order has been sent to the cook",
+                body: toasterMessage,
+                timeout: 0,
+                showCloseButton: true
+            });
+
             //Let's set the servings back to 1 and calculate the cost.
             $scope.domElements.servings = 1;
             _calculateFoodCost();
@@ -184,7 +195,7 @@
         toaster.pop('warning', "email required", failedLoginString);
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cardNumber) {
-        toaster.pop('warning', "Card number required", failedLoginString);
+        toaster.pop('warning', "Card number required", "Unable to buy meal without payment info.");
         return false;
       } else if (!$scope.domElements.userInfo || !$scope.domElements.userInfo.cvc) {
         toaster.pop('warning', "cvc required", failedLoginString);
@@ -256,10 +267,8 @@
 
     $scope.logoutUser = function () {
       chefFactory.logoutUser();
-
       $scope.selectedButton = false;
       $scope.domElements.userInfo = {};
-
       delete $scope.currentUser;
     }
 
@@ -354,7 +363,9 @@
                     _createStripeCustomerThenSignup();
                     // _checkIfCurrentUser();
                   } else {
-                    $scope.logoutUser();
+                    $scope.selectedButton = true;
+                    chefFactory.logoutUser();
+                    delete $scope.currentUser;
                     $scope.domElements.pageLoading = false;
                   }
                 }
